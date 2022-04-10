@@ -1,0 +1,27 @@
+\begin{adjustbox}{max totalsize={\textwidth}{.8\textheight},center}
+    \begin{ganttchart}[
+        hgrid,
+        vgrid={*{6}{draw=none},{dotted}},
+        vrule/.style={very thick, red},
+        x unit=0.125cm,
+        time slot format=isodate,
+        time slot unit=day,
+        calendar week text = {W\currentweek{}},
+        bar height = 0.6, %necessary to make it fit the height
+        bar top shift = 0.2, %to move it inside the grid space ;)
+        bar label node/.append style={align=left,text width={width("Simple Radio Station ")}},
+        bar incomplete/.append style={fill=cyan},
+        progress label text = \relax
+        ]{2021-09-13}{2022-05-15}
+        \gantttitlecalendar{year, month=name, week} \\
+        \ganttbar[bar/.append style={fill=cyan}]{Learn VNX}{2021-09-15}{2021-12-15}\\
+        \ganttbar[bar/.append style={fill=blue}]{Build scenerio}{2021-10-15}{2022-02-01}\\
+        \ganttbar[bar/.append style={fill=cyan}]{QUIC papers}{2022-02-01}{2022-04-01}\\
+        \ganttbar[bar/.append style={fill=blue}]{Multicast papers}{2021-10-15}{2022-04-01}\\
+        \ganttbar[bar/.append style={fill=cyan}]{NGHQ Tests}{2022-02-15}{2022-03-15}\\
+        \ganttbar[bar/.append style={fill=blue}, progress = 20]{Wireshark Dissector}{2022-03-22}{2022-04-15}\\
+        \ganttbar[bar/.append style={fill=cyan}]{Simple Radio Station}{2022-04-05}{2022-04-10}\\
+        \ganttbar[bar/.append style={fill=blue}]{NGHQ Radio Station}{2022-04-10}{2022-04-20}\\
+        %\ganttvrule{2022-05-15}{2022-05-15}
+    \end{ganttchart}
+\end{adjustbox}

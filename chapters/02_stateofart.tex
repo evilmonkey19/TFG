@@ -36,25 +36,14 @@
     raising of important services (like e-commerce) and cyberattacks, specially spoofing, the use of TLS\footnote{TLS : Transport Security Layer} has also became a standard. Websites that
     deliver real-time video like Youtube or Twitch are not an exception either. This also adds some complexity and workload delivering the website to the client.
 
-    When someone connects to a internet using a web-browser at least it need 3 packets for for stablishing the TCP connection, 3 for stablishing the TLS connection over 
-    TCP and 2 HTTP packets (request and response).It is being received the first byte of content after the 7th packet! This handshake, although being the most being used,
-    it is not optimal. When a really small website is being delivered (imagine an html "Hello World!"), a load of resources and packets are being used for a deliver a 
-    small packet. More control stuff than content. It gets even worse, if it is the case that have already stablished a connection earlier and after a while there
+    When someone connects to a internet using a web-browser at least it need 3 packets for for stablishing the TCP connection, 3 for stablishing the TLS connection over TCP and 2 HTTP packets (request and response).
+    It is being received the first byte of content after the 7th packet! This handshake, although being the most being used, it is not optimal. When a really small website is being delivered (imagine an html "Hello World!"),
+    a load of resources and packets are being used for a deliver a small packet. More control stuff than content. It gets even worse, if it is the case that have already stablished a connection earlier and after a while there
     is a new request; all this handshake has to be done again because TCP and TLS are a connection oriented protocols, but HTTP is not. QUIC aims to solve this type of problems.
 }
 \subsection{The new standard: QUIC}
 {
-    The main goal of QUIC is not only to stablish the connection as fast as possible requiring the minimum packets until the first byte of content is sent but 
-    also do all of this in a secure way. The initials draft were done by Google using the acronym QUIC for Quick UDP Internet Protocol, although nowadays is a RFC (RFC 9000) which
-    has been done by the IETF\footnote{Internet Engineering Task Force} and it is not an acronym anymore.
-
-    TCP has been so popular that has been implemented on most of the kernels and this is a problem. Nevertheless, there is another protocol that is really simple in terms of what
-    it does because it passes almost all responsabilities to the upper layers: UDP\footnote{Unit Datagram Protocol}. It is not that extended in terms of use, but almost all kernels
-    also implemented. In the past decades, many firewalls did not allow the pass of UDP packets because 
-
-
-
-
+    
     It is clear and obvious that for large content that can be stored in a small buffer and does not need to be real-time we can use a really known 
     protocol that have been around for years which is TCP. It is the main protocol for most of the services in the internet and has been even implemented
     in the kernel of most of the devices. Many of the devices that rule internet like firewalls or load-balancers were designed bearing in mind that the

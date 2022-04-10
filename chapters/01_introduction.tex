@@ -1,0 +1,29 @@
+\clearpage\section{Introduction}
+
+{
+    The main purpose of this thesis is to test QUIC protocol over Multicast in a simulated environment in order to analyse the benefits and withdraws of the current
+    way of delivering live-streaming content through networks, which is using unicast and TCP. An HTTP Radio Station will be deployed using NGHQ, the only avalaible
+    open-source QUIC Multicast library. It does not have a stable version, so for future implementations some specifications may be different.
+
+    In order to replicate the internet environment, it has been developed a similar sceneario of the IP Multicast Practice from TCGI\footnote{TCGI : Transport, Control
+    i Gestió d'Internet} but developed in VNX\footnote{VNX : \textbf{V}irtual \textbf{N}etwork over Linu\textbf{x}} instead of SimCTL and using an Ubuntu 18.03 LTS
+    instead of Debian 5.
+
+    A unicast simple server using QUIC was also done using the NGTCP2 library, which is stable. It will be used as the reference for nowadays servers using the RFC 9000 QUIC.
+    
+    Due to the complexity of the technologies involved and the differences of the approach using multicast instead of unicast it was needed to read a lot of documentation
+    such as RFCs. During that time, it has been done the initial tests with the NGHQ library with some examples which are included with it (a simple sender-receiver application).
+    Unluckly, it was found a small problem analysing the packets: wireshark did not detect them as QUIC. In order to be able to analyse those packets, a dissector using Lua
+    have been developed. After the creation of the dissector, the small radio-station was developed and tested.
+}
+
+\subsection{Gantt Diagram}
+\label{ssec:gantt}
+\begin{figure}[H]
+    \centering
+    %\includegraphics[width=13cm]{img/diagram_gantt.png}
+    \input{others/gantt_diagrama}
+    \caption[Project's Gantt diagram]{\footnotesize{Gantt diagram of the project}}
+    \label{fig:gantt}
+\end{figure}
+
