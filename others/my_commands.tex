@@ -1,0 +1,12 @@
+\newcommand\myinput[2]{%
+  \setsepchar{,}%
+  \readlist*\mydata{#2}%
+  \foreachitem\myvardef\in\mydata{%
+    \setsepchar{=}%
+    \readlist*\myvar{\myvardef}%
+    \expandafter\edef\csname\myvar[1]\endcsname{\myvar[2]}%
+  }%
+  \catcode`[=\active %
+  \input{#1}%
+  \catcode`[=12 %
+}

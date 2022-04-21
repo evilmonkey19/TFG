@@ -9,19 +9,29 @@
         calendar week text = {W\currentweek{}},
         bar height = 0.6, %necessary to make it fit the height
         bar top shift = 0.2, %to move it inside the grid space ;)
-        bar label node/.append style={align=left,text width={width("Simple Radio Station ")}},
+        bar label node/.append style={align=left,text width={width("Desenvolupament ")}},
         bar incomplete/.append style={fill=cyan},
         progress label text = \relax
-        ]{2021-09-13}{2022-05-15}
+        ]{2021-09-13}{2022-06-05}
         \gantttitlecalendar{year, month=name, week} \\
-        \ganttbar[bar/.append style={fill=cyan}]{Learn VNX}{2021-09-15}{2021-12-15}\\
-        \ganttbar[bar/.append style={fill=blue}]{Build scenerio}{2021-10-15}{2022-02-01}\\
-        \ganttbar[bar/.append style={fill=cyan}]{QUIC papers}{2022-02-01}{2022-04-01}\\
-        \ganttbar[bar/.append style={fill=blue}]{Multicast papers}{2021-10-15}{2022-04-01}\\
-        \ganttbar[bar/.append style={fill=cyan}]{NGHQ Tests}{2022-02-15}{2022-03-15}\\
-        \ganttbar[bar/.append style={fill=blue}, progress = 20]{Wireshark Dissector}{2022-03-22}{2022-04-15}\\
-        \ganttbar[bar/.append style={fill=cyan}]{Simple Radio Station}{2022-04-05}{2022-04-10}\\
-        \ganttbar[bar/.append style={fill=blue}]{NGHQ Radio Station}{2022-04-10}{2022-04-20}\\
+        \ganttbar[bar/.append style={fill=cyan}]{RFCs}{2021-09-15}{2022-05-01}\\
+        \ganttbar[bar/.append style={fill=blue}]{Draft}{2021-09-15}{2021-10-01}\\
+        \ganttbar[bar/.append style={fill=cyan}]{multicast \& \\ QUIC}{2021-09-15}{2022-05-01}\\
+        \ganttbar[bar/.append style={fill=blue}]{Documentació \\ programes}{2021-09-15}{2021-12-31}\\
+        \ganttbar[bar/.append style={fill=cyan}]{Entorn VNX}{2021-09-15}{2021-12-31}\\
+        \ganttbar[bar/.append style={fill=blue}]{LXCs}{2021-10-15}{2021-12-31}\\
+        \ganttbar[bar/.append style={fill=cyan}]{Provisionament}{2021-10-15}{2021-12-31}\\
+        \ganttbar[bar/.append style={fill=blue}]{Pràctica}{2021-10-15}{2021-12-31}\\
+        \ganttbar[bar/.append style={fill=cyan}]{Documentació \\ NGTCP2}{2022-02-15}{2022-05-15}\\
+        \ganttbar[bar/.append style={fill=blue}]{Desenvolupament \\ NGTCP2}{2022-02-15}{2022-05-15}\\
+        \ganttbar[bar/.append style={fill=cyan}]{Documentació \\ NGHQ}{2022-02-15}{2022-05-15}\\
+        \ganttbar[bar/.append style={fill=blue}]{Desenvolupament \\ NGHQ}{2022-02-15}{2022-05-15}\\
+        \ganttbar[bar/.append style={fill=cyan}]{Comparativa \\ desenvolupament}{2022-02-15}{2022-05-15}\\
+        \ganttbar[bar/.append style={fill=blue}]{Comparativa \\ tràfic}{2022-04-10}{2022-04-20}\\
+        \ganttbar[bar/.append style={fill=cyan}]{Proposició}{2021-09-15}{2021-09-20}\\
+        \ganttbar[bar/.append style={fill=blue}]{Revisió}{2021-11-10}{2021-11-15}\\
+        \ganttbar[bar/.append style={fill=cyan}]{Informe}{2022-04-05}{2022-05-15}\\
+        \ganttbar[bar/.append style={fill=blue}]{Presentació}{2022-05-10}{2022-05-30}\\
         %\ganttvrule{2022-05-15}{2022-05-15}
     \end{ganttchart}
 \end{adjustbox}

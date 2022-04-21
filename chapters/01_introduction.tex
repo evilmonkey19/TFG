@@ -1,29 +1,182 @@
-\clearpage\section{Introduction}
+\section{Introducció}
 
 {
-    The main purpose of this thesis is to test QUIC protocol over Multicast in a simulated environment in order to analyse the benefits and withdraws of the current
-    way of delivering live-streaming content through networks, which is using unicast and TCP. An HTTP Radio Station will be deployed using NGHQ, the only avalaible
-    open-source QUIC Multicast library. It does not have a stable version, so for future implementations some specifications may be different.
+    En els darrers anys, els serveis de contingut en temps real han experimentat un creixement quasi exponencial, sobretot arran de la
+    popularitat de pàgines web com \url{youtube.com}, \url{twitch.tv} o sobretot amb l'ús de les videoconferències durant la pandèmia.
+    No obstant això, les tècniques actuals per distribuir aquest tipus de contingut, malgrat haver millorat bastant amb el desenvolupament
+    d'eines com \ac{WebRTC}, encara és un problema molt greu tant a la part dels servidors, principalment per les \ac{CDN}, com també pel
+    volum de tràfic que implica a les xarxes, principalment pels \ac{ISP}. De fet, s'està tornant una qüestió tecnològica tant greu que molts
+    serveis d'aquests han decidit apujar els seus preus per poder fer front a la demanda.
 
-    In order to replicate the internet environment, it has been developed a similar sceneario of the IP Multicast Practice from TCGI\footnote{TCGI : Transport, Control
-    i Gestió d'Internet} but developed in VNX\footnote{VNX : \textbf{V}irtual \textbf{N}etwork over Linu\textbf{x}} instead of SimCTL and using an Ubuntu 18.03 LTS
-    instead of Debian 5.
+    Al mateix temps que hi ha aquest augment de la demanda per serveis nous d'Internet, també hi ha altres que estan intentant canviar
+    de plataforma de distribució tecnològica com la televisió i la ràdio; és a dir, les cadenes de televisió estan intentant transmetre el seu contingut utilitzant Internet en lloc d'antenes o per cable utilitzant un canal freqüencial destinat per elles. De fet, fer-ho a través
+    d'Internet permet estalviar costos significatius de distribució al mateix temps que permet tenir una retroactivitat i perspectiva més acurada
+    de la quantitat de gent que està veient l'emissió.
 
-    A unicast simple server using QUIC was also done using the NGTCP2 library, which is stable. It will be used as the reference for nowadays servers using the RFC 9000 QUIC.
+    \begin{figure}[H]
+        \label{fig:trafic_desglosat}
+        \centering
+        \includegraphics[width=15cm, height=7.2cm]{img/01_introduccio/trafic_peak.png}
+        \caption[Trafic d'Internet]{\footnotesize{Volum de tràfic en un dia amb la sortida d'un nou videojoc. En blau el tràfic no analitzat,
+        en ver fort el tràfic normal, en verd fluix el tràfic si la descarrega es fes amb multicast. Imatge d'Akamai.}}
+    \end{figure}
+
+    L'any 2015, el tràfic de serveis de vídeo en temps real, com Netflix, YouTube o Twitch, va representar pràcticament el 70\% del tràfic. Normalment,
+    aquest tipus de tràfic va per pics, ja que quan una nova temporada d'una sèrie famosa, quan un youtuber important puja un nou vídeo o s'està
+    fent un esdeveniment en directe la quantitat de gent veient el contingut sol augmentar de manera sobtada sobretot als primers moments. Això sol implicar
+    en general problemes per donar accés a tothom al servei depenent de quanta gent sigui, mentre que al mateix temps altres serveis també es vegin
+    afectats (les \ac{CDN} solen tenir molts serveis simultàniament distribuïts en microserveis).
     
-    Due to the complexity of the technologies involved and the differences of the approach using multicast instead of unicast it was needed to read a lot of documentation
-    such as RFCs. During that time, it has been done the initial tests with the NGHQ library with some examples which are included with it (a simple sender-receiver application).
-    Unluckly, it was found a small problem analysing the packets: wireshark did not detect them as QUIC. In order to be able to analyse those packets, a dissector using Lua
-    have been developed. After the creation of the dissector, the small radio-station was developed and tested.
+    Per ficar dades i posar-nos en context del volum de tràfic, el màxim que s'ha arribat a donar simultàniament per part de la \ac{CDN} Akamai
+    ha estat un pico de 167 Tbps en abril de 2020. Suposant un tràfic lineal, per simplificar, ja que normalment s'utilitzen codificacions \ac{CBR}
+    en directe en temps real, amb una resolució de 1080p el tràfic és de 5 Mbps/connexió i fins a 20 Mbps/connexió en cas de 4k. Llavors, en 1080p
+    suposant aquell tràfic màxim suportat llavors es podrien arribar fins a 33.4 milions de clients en 1080p i fins a 8.35 milions en 4k. Si tota
+    Espanya volgués mirar un contingut en directe, seria impossible donar el servei.
+    
+    Aquests problemes de subministrament solen ser a causa que les connexions que es fan són punt a punt; dit d'una altra manera,
+    són unicast. Això implica que el servei que pots donar en gran part està limitat al nombre de connexions simultànies que es pot donar. Malgrat que
+    l'ús d'unicast té grans avantatges com la facilitat en la seguretat, la simplificació en l'arquitectura del programa o que pràcticament tots els
+    dispositius del món suporten, també comporta un gran inconvenient.
+    
+    Si el contingut que has de distribuir als clients és exactament el mateix com en el cas de la televisió o la ràdio, unicast pot arribar a saturar
+    un servei si el volum d'usuaris és molt alt. Arran d'aquesta qüestió de distribuir el mateix contingut a tothom que sol·licitàs, ja en
+    els anys 80 amb la creació d'\ac{IP}, es va pensar en una tecnologia que soluciona aquests casos: \textbf{IP Multicast}. Malgrat no estar tan
+    establerta com IP unicast, sí que la gran majoria de dispositius l'accepten.
+    
+    Per altra banda, al llarg dels anys, a les connexions unicast normalment han fet ús d'un protocol anomenat \ac{TCP}. Aquest protocol va ser especialment
+    important en els anys 90 i a principis dels 2000 perquè Internet pogués funcionar i popularitzar-se, ja que les connexions eren lentes i poc fiables.
+    Aquest protocol incorpora una sèrie de mecanismes per intentar pal·liar aquests qüestió. No obstant això, amb la millora de les connexions i la seva fiabilitat
+    hi ha altres protocols que poden ser més útils i millors en l'Internet que tenim actualment, incorporant funcionalitats que antigament no s'havien plantejat
+    o que no semblaven rellevants. Un protocol que pareix que substituirà \ac{TCP} és QUIC, ja que millora bastant certs aspectes de TCP com l'establiment
+    de la connexió molt més ràpidament (menys RTTs) o el poder restablir la sessió amb el servidor en canviar de xarxa.
+
 }
 
-\subsection{Gantt Diagram}
-\label{ssec:gantt}
-\begin{figure}[H]
-    \centering
-    %\includegraphics[width=13cm]{img/diagram_gantt.png}
-    \input{others/gantt_diagrama}
-    \caption[Project's Gantt diagram]{\footnotesize{Gantt diagram of the project}}
-    \label{fig:gantt}
-\end{figure}
+\subsection{Transfons del project}
+{
+    Aquest projecte es fa des de cero, encara agafa principalment dos projectes de codi lliure d'Internet i un borrador del \ac{IETF}:
 
+    \begin{enumerate}
+        \item{\textbf{\textit{Hypertext Transfer Protocol (\ac{HTTP}) over multicast QUIC}}, de Lucas Pardue, Richard Bradbury i Sam Hurst.}
+        \item{\textbf{\textit{NGHQ}}: Llibrería escrita en C que implementa part de l'esborrany de \textit{\ac{HTTP} sobre multicast QUIC} fins la versió 7.}
+        \item{\textbf{\textit{NGTCP2}}: Llibrería escrita en C que implementa el protocol QUIC segons l'estàndard escrit en el \ac{RFC} 9000.}
+    \end{enumerate}
+
+    La idea original ha estat de l'autor, encara que l'enfocament i la metodologia han estat proposades pel professor, Jorge Mata.
+
+    Tot el codi utilitzat és de codi lliure desenvolupat per enginyers i que està pràcticament tot allotjat en plataformes
+    online com Github. Tot el codi desenvolupat en aquest projecte està allotjat també al Github i també és de codi lliure.
+}
+
+\subsection{Objectius}
+{
+    El principal objectiu d'aquest projecte és desenvolupar un servidor de contingut en temps real que faci ús de la tecnologia
+    QUIC sobre \ac{IP} multicast utilitzant la llibrería de software lliure. Al mateix temps, es preten fer una comparativa de les
+    avantatges i inconvenients front al desenvolupament d'un servidor similar utilitzant QUIC sobre IP unicast; és dir, el perfil
+    de QUIC genèric que proposa el \ac{RFC} 9000.
+
+    El sistema estarà conformat per un servidor que rebra peticions dels clients que demanaràn el contingut de radio en directe a
+    través d'\ac{IP}. Aquest servidor redireccionarà en el cas de multicast al fluxe multicast o enviarà directament la informació en
+    cas d'unicast.
+
+    \textbf{[ESBORRANY - FALTA L'IMATGE FINAL]}
+    \begin{figure}[H]
+        \label{fig:esborrany_configuracio}
+        \centering
+        \includegraphics[width=15cm, height=7.2cm]{img/01_introduccio/topologia_conf.png}
+        \caption[Trafic d'Internet]{\footnotesize{Topologia de la configuració plantejada.}}
+    \end{figure}
+
+    La arquitectura del sistema està basada en la següent escenari: s'utilitzarà un reproductor d'audio en directe, aquest serà captat
+    per un servidor intermig i li passarà el contingut al servidor que hem desenvolupat perquè el transmeti a través de la xarxa fins als
+    clients perquè ho reproduexin.
+
+    El que es pretén demostrar és que hi ha un límit d'usuaris en el cas d'unicast i, en canvi, no hi ha un límit en el cas d'usuaris multicast.
+    Donat que la majoria de la gent accedeix a través d'HTTP als serveis d'aquest tipus de contingut és farà ús de QUIC, un protocol desenvolupat
+    pensat en HTTP. Cal indicar que QUIC permet l'ús de fils simultànis que s'utilitzaràn per enviar tràfic també a través de multicast. El perfil
+    de QUIC en el cas de multicast difereix en alguns paràmetres i configuracions d'un perfil de QUIC normal.
+}
+
+\subsection{Requeriments i especificacions}
+{
+    \textbf{Requeriments del projecte}:
+    \begin{itemize}
+        \item Proveir un sistema integrat de transmissió de contingut en directe tant per la part del client
+                com la part del servidor que permiti la transmissió via unicast i/o multicast.
+        \item Donar una guia als usuaris finals per fer la instal·lació tant simple com sigui possible (annexe ?)
+        \item Tot el software extern o implementat ha de ser gratuït i de codi lliure.
+        \item Evaluar la solució final emulant-la en diferents escenaris i proveir uns resultats consistents.
+        \item La transferència del contingut ha de ser en el màxim possible fluida i continua.
+        \item El software desenvolupat ha de ser el més flexible possible per poder utilitzar-lo en futures
+                implementacions d'altres softwares si es volgués.
+        \item S'ha de poder avaluar el tràfic de manera quantitativa i qualitativa.
+    \end{itemize}
+    
+    \textbf{Especificacions del projecte}:
+    \begin{itemize}
+        \item Hi ha d'haver com a mínim dos clients reben el contingut, ja que si no multicast deixa de tenir sentit encara
+                que és viable fer-ho per un.
+        \item El mostreig de la ràdio ha de poder variar durant la transmissió.
+        \item Per evaluar el sistema en un entorn controlat, el servidor i els clients seràn màquines virtual Linux que corren
+                damunt el mateix sistema operatiu; Linux també.
+        \item S'evaluarà el tràfic amb eines d'ús extensiu, proveint els filtres necessaris per decodificar el missatges transmessos.
+    \end{itemize}
+}
+
+\subsection{Pla de feina}
+{
+    En aquesta secció de document es descriu en detall tots els blocs de treball en el que s'ha dividit la feina i els temps (Diagram de Gantt)
+    en els que s'ha fet la tasca corresponent.
+
+    Al llarg del projecte, hi hagut varis canvis en respecte al pla original. Els principals canvis han estat els següents:
+    \begin{itemize}
+        \item \textbf{Lectura de \ac{RFC}s}. Donat la complexitat del projecte i la profunditat d'aquest s'ha vist que la quantitat de documentació
+                al respecte que s'hagut de llegir ha estat molt major de la que s'esperava, en gran part, ja que el nombre de tecnologies
+                necessaries per poder entendre i desenvolupar una plataforma com la que es demana és molt major del que cabria esperar a priori.
+                També, a causa de que s'utilitzen tecnologies noves com QUIC, hi han hagut \ac{RFC}s que han aparegut durant el transcurs com el 9221.
+        \item \textbf{Certs programes no existien o no compilaven}. Per fer l'escenari de proves s'ha volgut utilitzar un software nou per virtualitzar
+                la xarxa intentant imitar la de la pràctica \ac{IP} multicast de l'assignatura \ac{TCGI} del grau d'Enginyeria de serveis i sistemes
+                de telecomunicaciones del \ac{ETSETB}. Es va trobar que les màquines virtuals i el software utilitzat en aquelles màquines és antic i qualcún
+                ja no està disponible. S'ha buscat alternatives al respecte.
+
+    El que més ha dificultat i endarrerit el desenvolupament ha estat la lectura de la documentació ja que era molt més extensa del que s'esperava a priori
+    ademés de que també entrava en molt detalls que semblaven contradictoris amb la idea, encara que sembla que no. S'ha de pensar que la proposta és una
+    tecnologia que encara no s'ha desenvolupat del tot i encara està en procés, llavors això és més un prova del concepte que una demostració per ficar-ho
+    a producció. Encara s'està lluny d'aquest punt com es veurà al llarg del treball.
+    \end{itemize}
+}
+\subsubsection{Estructura de la feina}
+{
+    \textbf{[ESBORRANY - FALTA L'IMATGE FINAL]}
+    \begin{figure}[H]
+        \label{fig:estructura}
+        \centering
+        \includegraphics[width=15cm]{img/01_introduccio/estructura_treball.png}
+    \end{figure}
+}
+\subsubsection{Paquets de feina, tasques i fites}
+{
+    \begin{center}
+        \input{others/01_introduccio/WP1}
+        \input{others/01_introduccio/WP2}
+        \input{others/01_introduccio/WP3}
+        \input{others/01_introduccio/WP4}
+        \input{others/01_introduccio/WP5}
+        \input{others/01_introduccio/WP6}
+    \end{center}
+    \newpage
+    \textbf{Objectius}
+    \input{others/01_introduccio/objectius_1}
+    \input{others/01_introduccio/objectius_2}
+}
+\subsection{Diagrama temporal (Diagrama de Gantt)}
+{
+    \label{ssec:gantt}
+    \begin{figure}[H]
+        \centering
+        %\includegraphics[width=13cm]{img/diagram_gantt.png}
+        \input{others/gantt_diagrama}
+        \caption[Diagrama de Gantt del projecte]{\footnotesize{Diagrama de Gantt del projecte}}
+        \label{fig:gantt}
+    \end{figure}
+}

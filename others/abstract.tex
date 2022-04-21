@@ -1,8 +1,10 @@
-\section*{Abstract}
+\section*{Abstracte}
 
 {
-    This document analyses the current implementations of QUIC protocol and the HTTP/3 mapping that facilitates the transfer
-    of HTTP resources over multicast QUIC transport as its framing and packetisation layer. It shows the steps to create a radio station over HTTP in order to demostrate
-    that a live-streaming over QUIC multicast is possible at the current moment. The benefits and withdraws of the current
-    existing library (NGHQ\footnote{HTTP over Multicast QUIC Draft 07 - Sam Hurst, Richard Bradbury}) are explained.
+    El present document descriu i compara la implementació d'una estació de radio \ac{IP} fent ús de la tecnologia QUIC sobre multicast
+    i sobre unicast per retransmetre contigut en temps real. L'objectiu és desmostrar que l'ús de multicast és millor per distribuir 
+    aquest tipus de contingut en termes d'escalabilitat, energètics i econòmics. També es discuteix les dificultats i avantatges tècniques
+    de l'ús de QUIC sobre multicast (Draft QUIC over Multicast, Pardue i Hurst) com la gestió de Connection IDs o l'ús d'\ac{RTP}
+    i \ac{RTCP} per capes superiors i la seguretat.
+
 }

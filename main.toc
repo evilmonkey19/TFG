@@ -1,80 +1,86 @@
 \acswitchoff 
-\babel@toc {english}{}
+\babel@toc {english}{}\relax 
 \contentsline {section}{List of Figures}{3}{section*.2}%
 \contentsline {section}{List of Tables}{3}{section*.4}%
-\babel@toc {english}{}
-\babel@toc {english}{}
-\babel@toc {english}{}
-\babel@toc {english}{}
-\babel@toc {english}{}
-\babel@toc {english}{}
-\babel@toc {english}{}
-\babel@toc {english}{}
-\babel@toc {english}{}
-\babel@toc {english}{}
-\babel@toc {english}{}
-\babel@toc {english}{}
-\babel@toc {english}{}
-\babel@toc {english}{}
-\babel@toc {english}{}
-\babel@toc {english}{}
-\babel@toc {english}{}
-\babel@toc {english}{}
-\babel@toc {english}{}
-\babel@toc {english}{}
-\babel@toc {english}{}
-\babel@toc {english}{}
-\babel@toc {english}{}
-\babel@toc {english}{}
-\babel@toc {english}{}
-\babel@toc {english}{}
-\babel@toc {english}{}
-\babel@toc {english}{}
-\babel@toc {english}{}
-\babel@toc {english}{}
-\babel@toc {english}{}
-\babel@toc {english}{}
-\babel@toc {english}{}
-\babel@toc {english}{}
-\babel@toc {english}{}
-\babel@toc {english}{}
-\babel@toc {english}{}
-\babel@toc {english}{}
-\babel@toc {english}{}
-\babel@toc {english}{}
-\babel@toc {english}{}
-\babel@toc {english}{}
-\babel@toc {english}{}
-\babel@toc {english}{}
-\babel@toc {english}{}
-\babel@toc {english}{}
-\babel@toc {english}{}
-\babel@toc {english}{}
-\babel@toc {english}{}
-\babel@toc {english}{}
-\babel@toc {english}{}
-\contentsline {section}{\numberline {1}Introduction}{7}{section.1}%
-\contentsline {subsection}{\numberline {1.1}Gantt Diagram}{7}{subsection.1.1}%
-\contentsline {section}{\numberline {2}Live-streaming state of art }{8}{section.2}%
-\contentsline {subsection}{\numberline {2.1}Technologies used at the moment}{8}{subsection.2.1}%
-\contentsline {subsection}{\numberline {2.2}The new standard: QUIC}{9}{subsection.2.2}%
-\contentsline {subsection}{\numberline {2.3}Benefits of using TCP for live-streaming}{9}{subsection.2.3}%
-\contentsline {subsection}{\numberline {2.4}UDP}{10}{subsection.2.4}%
-\contentsline {subsection}{\numberline {2.5}Topic}{10}{subsection.2.5}%
-\contentsline {subsection}{\numberline {2.6}Topic}{10}{subsection.2.6}%
-\contentsline {section}{\numberline {3}Section 3}{11}{section.3}%
-\contentsline {subsection}{\numberline {3.1}Subsection}{11}{subsection.3.1}%
-\contentsline {section}{\numberline {4}Section 4}{13}{section.4}%
-\contentsline {subsection}{\numberline {4.1}Subsection 4.1}{13}{subsection.4.1}%
-\contentsline {subsection}{\numberline {4.2}Subsection 4.2}{14}{subsection.4.2}%
-\contentsline {section}{\numberline {5}Section 5}{15}{section.5}%
-\contentsline {subsection}{\numberline {5.1}Overview}{15}{subsection.5.1}%
-\contentsline {section}{\numberline {6}Experiments and results}{16}{section.6}%
-\contentsline {section}{\numberline {7}Budget}{17}{section.7}%
-\babel@toc {english}{}
-\babel@toc {english}{}
-\contentsline {section}{\numberline {8}Environment Impact (Optional)}{18}{section.8}%
-\contentsline {section}{\numberline {9}Conclusions}{19}{section.9}%
-\contentsline {section}{\numberline {10}Future Work}{19}{section.10}%
-\contentsline {section}{References}{20}{section*.11}%
-\contentsline {section}{Appendices}{21}{section*.12}%
+\babel@toc {english}{}\relax 
+\babel@toc {english}{}\relax 
+\babel@toc {english}{}\relax 
+\babel@toc {english}{}\relax 
+\babel@toc {english}{}\relax 
+\babel@toc {english}{}\relax 
+\babel@toc {english}{}\relax 
+\babel@toc {english}{}\relax 
+\babel@toc {english}{}\relax 
+\babel@toc {english}{}\relax 
+\babel@toc {english}{}\relax 
+\babel@toc {english}{}\relax 
+\babel@toc {english}{}\relax 
+\babel@toc {english}{}\relax 
+\babel@toc {english}{}\relax 
+\babel@toc {english}{}\relax 
+\babel@toc {english}{}\relax 
+\babel@toc {english}{}\relax 
+\babel@toc {english}{}\relax 
+\babel@toc {english}{}\relax 
+\babel@toc {english}{}\relax 
+\babel@toc {english}{}\relax 
+\babel@toc {english}{}\relax 
+\babel@toc {english}{}\relax 
+\babel@toc {english}{}\relax 
+\babel@toc {english}{}\relax 
+\babel@toc {english}{}\relax 
+\babel@toc {english}{}\relax 
+\babel@toc {english}{}\relax 
+\babel@toc {english}{}\relax 
+\babel@toc {english}{}\relax 
+\babel@toc {english}{}\relax 
+\babel@toc {english}{}\relax 
+\babel@toc {english}{}\relax 
+\babel@toc {english}{}\relax 
+\babel@toc {english}{}\relax 
+\babel@toc {english}{}\relax 
+\babel@toc {english}{}\relax 
+\babel@toc {english}{}\relax 
+\babel@toc {english}{}\relax 
+\babel@toc {english}{}\relax 
+\babel@toc {english}{}\relax 
+\babel@toc {english}{}\relax 
+\babel@toc {english}{}\relax 
+\babel@toc {english}{}\relax 
+\babel@toc {english}{}\relax 
+\babel@toc {english}{}\relax 
+\babel@toc {english}{}\relax 
+\babel@toc {english}{}\relax 
+\babel@toc {english}{}\relax 
+\babel@toc {english}{}\relax 
+\contentsline {section}{\numberline {1}Introducció}{7}{section.1}%
+\contentsline {subsection}{\numberline {1.1}Transfons del project}{8}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}Objectius}{9}{subsection.1.2}%
+\contentsline {subsection}{\numberline {1.3}Requeriments i especificacions}{10}{subsection.1.3}%
+\contentsline {subsection}{\numberline {1.4}Pla de feina}{10}{subsection.1.4}%
+\contentsline {subsubsection}{\numberline {1.4.1}Estructura de la feina}{11}{subsubsection.1.4.1}%
+\contentsline {subsubsection}{\numberline {1.4.2}Paquets de feina, tasques i fites}{12}{subsubsection.1.4.2}%
+\contentsline {subsection}{\numberline {1.5}Diagrama temporal (Diagrama de Gantt)}{16}{subsection.1.5}%
+\contentsline {section}{\numberline {2}Live-streaming state of art }{17}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Technologies used at the moment}{17}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}The new standard: QUIC}{18}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.3}Benefits of using TCP for live-streaming}{18}{subsection.2.3}%
+\contentsline {subsection}{\numberline {2.4}UDP}{19}{subsection.2.4}%
+\contentsline {subsection}{\numberline {2.5}Topic}{19}{subsection.2.5}%
+\contentsline {subsection}{\numberline {2.6}Topic}{19}{subsection.2.6}%
+\contentsline {section}{\numberline {3}Section 3}{20}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Subsection}{20}{subsection.3.1}%
+\contentsline {section}{\numberline {4}Section 4}{22}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Subsection 4.1}{22}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Subsection 4.2}{23}{subsection.4.2}%
+\contentsline {section}{\numberline {5}Section 5}{24}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Overview}{24}{subsection.5.1}%
+\contentsline {section}{\numberline {6}Experiments and results}{25}{section.6}%
+\contentsline {section}{\numberline {7}Budget}{26}{section.7}%
+\babel@toc {english}{}\relax 
+\babel@toc {english}{}\relax 
+\contentsline {section}{\numberline {8}Environment Impact (Optional)}{27}{section.8}%
+\contentsline {section}{\numberline {9}Conclusions}{28}{section.9}%
+\contentsline {section}{\numberline {10}Future Work}{28}{section.10}%
+\contentsline {section}{References}{29}{section*.22}%
+\contentsline {section}{Appendices}{30}{section*.23}%
