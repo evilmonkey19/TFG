@@ -1,13 +1,13 @@
-*.aux
-*.acr
-*.bbl
-*.blg
-*.fdb_latexmk
-*.fls
-*.lof
-*.log
-*.lot
-*.out
-*.gz
-*.toc
+.aux
+.acr
+.bbl
+.blg
+.fdb_latexmk
+.fls
+.lof
+.log
+.lot
+.out
+.gz
+.toc
 
