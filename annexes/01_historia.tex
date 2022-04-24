@@ -1,0 +1,135 @@
+\subsection{Internet a finals dels 90 i principis dels 2000}
+{
+    A l'any 1981, Jon Postel va publicar el \ac{RFC} 791 que va revolucionar les xarxes com avui en dia les coneixem.
+    Aquest RFC especificava el protocol IP que permitia comunicar dues xarxes amb tecnologies diferents. Aquesta tecnologia
+    és sobre la qual es basa pràcticament el que avui coneixem com Internet.
+    
+    No obstant, a causa de la poca fiabilitat de les linies de transmisió (la majoria eren \ac{ADSL} fins a principis dels 2000) es van
+    desenvolupar 2 protocols més que avui en dia son utilitzats de manera extensiva: el protocol \ac{ICMP}, RFC 792, i
+    el protocol TCP, RFC 793. ICMP es va desenvolupar per poder fer un diagnòstic automàtic per saber l'estat de la xarxa/connexió i \ac{TCP}
+    es va desenvolupar per guanyar fiabilitat, ja que afegia conceptes com la retransmissió d'un paquet o el \ac{ACK} per confirmar que 
+    un paquet havia arribat correctament.
+}
+
+\subsection{La creació de multicast i el seu ús actual}
+{
+    Durant molts anys i encara avui en dia, la majoria de comunicacions que es fan via Internet son unicast. De fet, el protocol IP 
+    inicialment estava desenvolupat per ser unicast. No obstant, l'any 1986 un estudiant de doctorat de la universitat de Stanford 
+    anomenat Steve Deering va proposar amb la publicació del RFC 988 una extensió d'IP perquè les comunicacions poguessin ser de un 
+    per a molts. És dir, que a través d'una única direcció es pogués distribuir el mateix contingut a tots els receptors que ho
+    volguessin. La idea es podria dir que està basada en com funcionen actualment la radio o la televisió en la qual una antena emet
+    la senyal i tothom que la vulgui rebre pot instal·lar una antena receptora per rebre la emissió.
+
+    Encara que a priori sembla una tecnologia molt sencilla, en realitat en xarxes com les d'Internet pot arribar a ser força complicat.
+    Entre d'altres problemes aquesta tecnologia és pot fiable en termes de comunicar que el paquet ha arribat correctament al emissor, ja
+    que el emissor emet pero "no espera" que ningú li respongui. Normalment s'utilitzen canals alternatius que fan ús de unicast per aquest
+    tipus de casos.
+    
+    Un altre problema molt gran de multicast té que veure amb la congestió, ja que al no tenir un mecanisme de feedback, com sí te TCP, llavors
+    no es pot gestionar de manera tan sencilla. Ademés s'ha d'afegir que enviar el mateix paquet a tothom com si només fos un client,
+    però enviar-lo per diferents xarxes amb diferents situacions sense saber si arribarà bé o no encara complica més el tema . Hi ha protocols
+    com Scream que sí que permeten aquesta gestió de la congestió i demés, però encara així tampoc és gens sencill.
+
+    Com a últim gran problema d'aquest és que pot generar bucles o també dit "tempestes multicast", en les quals el paquet s'emet d'un router a un altre
+    fent un bucle si aquest poden arribar a tenir una topologia d'anell. És un problema que no obstant es pot solucionar amb protocols com \ac{PIM}.
+
+    Per poder arribar a fer ús de multicast, com es pot intuir fàcilment, no es pot fer ús de la tecnologia com TCP. Per utilitzar IP multicast hi ha
+    dos tecnologies que s'han d'utilitzar avui en dia: per un part IGMP i per l'altra UDP.
+}
+
+\newpage 
+\subsection{IGMP}
+{
+    \ac{IGMP} o Internet Group Management Protocol és un protocol que serveix per avisar al router a través del qual es pot rebre la senyal,
+    o en el seu defecte a l'emisor, que es vol rebre la emissió. És un protocol molt sencill en el qual únicament s'avisa al node més pròxim teu que pot enviar
+    la senyal quina és la direcció multicast que es vol escoltar i el port, ademés d'altres petits paràmetres. Aquest també permet que es demani que 
+    la emissió sigui d'una IP d'origen concret (IGMP v3).
+}
+
+\subsection{UDP}
+{
+    Donada la gran popularitat de TCP, en el seu moment molts dissenyadors de sistemes operatius varen decidir implementar aquest en el nucli; el cas més
+    famós és el de Linux. Per una part, aquesta decisió va fer que l'eficiència dels sistemes millorés de manera molt notòria i que molts servidors de 
+    l'època poguèssin donar el servei de manera significativament millor. No obstant, aquesta decisió que a priori sembla bona per contra va implicar que també tots
+    els sistemes d'enrutament, firewalls, balancejador de càrrega i demés confïin que sempre s'utilitzi aquest protocol i no deixant passar altres protocols.
+    
+    Per sort, uns anys abans, a l'any 1980, Jon Postel també va publicar el RFC 768 en el qual s'especifica un altre protocol alternatiu a TCP; o millor dit,
+    que TCP va substituir. \ac{UDP} o User Datagram Protocol és un protocol el qual està just per damunt de IP en el model \ac{OSI}, a la capa de
+    transport. Actualment son els dos protocols principals en aquesta capa i que pràcticament tots els equips d'Internet utilitzen.
+
+    UDP és un protocol força sencill, ja que únicament ha de passar el paquet en qüestió al port de destí indicat i poc més. Es podria dir que delega totes les
+    tasques de control de fluxe, retransmissió, etcètera a capes superiors. En el cas de protocols de capes superiors que volen implementar aquestes eines a la 
+    seva manera o que directament no volen utilitzar-les per raons vàries, TCP pot arribar a ser un problema i UDP esdevé la solució. La gran avantaje d'aquest
+    protocol és que també està implementat a pràcticament tots els nuclis de sistemes operatius del món perquè és molt sencill encara que no s'utilitzi tant.
+
+}
+
+\subsection{Com accedim a una pàgina web?}
+{
+    A l'any 1989 Tim Berners-Lee i un grup d'enginyers del \ac{CERN} varen observar que els científics tenien un problema molt particular a la hora d'accedir
+    als documents: la majoria d'aquests estaven fets en paper i si volien accedir per una cosa puntual al final perdien molt de temps, ademés que l'accés 
+    en n'aquests a vegades podia ser força complicat. Al veure aquest problema varen proposar una solució que avui en dia conèixem com navegador web i HTTP.
+
+    Bàsicament, el que proposaren era una eina en la qual els científics podien escriure els seus documents de manera sencilla a l'ordinadors i compartir-lo
+    amb tothom al mateix temps que es podia accedir a n'aquest de manera ràpida des de qualsevol lloc que tingués connexió amb el servidor on es deixava el 
+    document. L'eina de visualització del document és el que conèixem com navegador web, que avui en dia tenen la mateixa base pero defereix molt al que eren
+    antigament, i el protocol per publicar o demanar el document es diu HTTP.
+
+    Va ser tal la popularitat d'aquestes dues eines que avui en dia es utilitzat per qualsevol persona que té accés a internet. S'utilitza
+    ja sigui per mirar una pàgina web de noticies, mirar un video de cuina o inclús per fer transaccions bancàries. Aquest protocol tant extensament utilitzat 
+    va pràcticament en texte pla i viatja per internet sense cap tipus de encriptació per si sol.  De fet, fins al principis del 2000 s'utilitzava pràcticament
+    així. No obstant, amb el creixement de pàgines web de comerç elèctronic es va veure que transferir dades bancàries en pla a través de la xarxa tal vegada no 
+    és la millor idea. Per intentar solucionar aquest problema varen sorgir \ac{SSL} o Socket Security Layer o el seu predesor que avui en utilitzem: TLS o Transport
+    Security Layer.
+}
+
+\subsection{I la seguretat es tornà una necessitat}
+{
+    TLS o Transport Security Layer és un protocol de seguretat que s'ubica en la capa de sessió o capa L5 en el model OSI i que té la funció d'encriptar les
+    comunicacions entre dos interlocutors o, dit d'un altra manera, entre el client i el servidor. Aquest protocol està basat en SSL que és el seu precursor.
+    La idea bàsica de funcionament d'aquest és que entre els dos punts s'acorden unes claus d'encriptació i el tipus d'encriptació.
+    
+    Per fer la connexió inicialment el model és pràcticament igual que el de TCP. Per iniciar, primer el client li diu al servidor que vol establir una connexió 
+    amb ell ("client hello"), després aquest li respon que ha rebut el missatge i també li contesta ("server ACK/ server hello") i finalment el client li diu al
+    servidor que a rebut el seu missatge ("client ACK"). D'aquesta manera s'ha pogut establir la connexió. A part també una validacions i certificacions a part 
+    per poder autenticar que el servidor és qui realment diu ser.
+
+    A la següent imatge es pot veure en cert detall l'establiment de la connexió. En els tres primer paquets, que están en blau, es pot observar com s'estableix 
+    la comunicació TCP i en els següents paquets, que están en groc, com s'estableix la comunicació TLS. És important remarcar que perquè es pugui establir la 
+    comunicació en una capa superior primer s'ha d'establir en un capa inferior com és el cas que es veu amb TCP i TLS, primer s'estableix TCP i després TLS. No
+    obstant, sí que es pot mantenir la sessió com ja es veurà quan es parli de QUIC.
+
+    \begin{figure}[H]
+        \label{fig:tcp_tls_handshake}
+        \centering
+        \includegraphics[width=15cm, height=7.2cm]{img/02_stateofart/tcp_tls_handshake.png}
+        \caption[TCP i TLS handshake]{\footnotesize{Handshake de TCP en blau i handshake de TLS en groc. Imatge de cloudflare.}}
+    \end{figure}
+
+}
+
+\subsection{Pero la seguretat també pot ser un problema}
+{
+    Al veure el diagrama anterior, un es pot donar compte d'un fet molt important: la comunicació és només entre dos terminals. Això vol dir que només es pot
+    encriptar la comunicació entre dos nodes? La resposta és sí, pero no.
+
+    Els algorismes actuals de criptografia estan pensats per ser utilitzats entre dos terminals únicament; és dir, la comunicació ha de ser punt a punt. D'aquesta
+    manera, en cas de que no sigui un algorisme romput o que cap dels dos terminals estigui corrupte, la transferència de dades estarà encriptada i cap punt
+    intermig podrà llegir l'informació. Això és molt important a Internet, ja que és una xarxa pública i la que si s'envien les dades de manera segura pot haver-hi 
+    problemes greus sobretot per plataformes de comerç electrònic, bancs o inclús empresarials.
+
+    No obstant, si tirem la mirada enrera podrem veure un cas en el que la criptografia es feia de un per a molts (multicast). Als anys 90 i principis del 2000 moltes
+    empreses de televisió oferien el fútbol i altres canals pagant. La manera de transmetre la televisió en el millor cas en aquella época era via antena, terrestre i
+    satèl·lit, o via cable. Donat que el cable podia arribar a ser car, generalment s'enviava via antena. El problema? Que qualsevol persona podia rebre la emisió.
+
+    Per evitar que la gent no pagués i disfrutás del servei gratuitament, aquestes empreses varen decidir recurrir a la criptografia. En el seu cas, varen començar
+    a distribuir unes tarjetes on hi havia una clau privada que desencriptava la senyal per poder disfrutar d'aquests canals. 
+    
+}
+
+\subsection{Borrador}
+{
+    Per altra banda, s'observa que la quantitat de paquets per poder establir la connexió és molt alt, encara que sigui nomès
+    per enviar un sencill "Hola mundo!" en HTML. És més, en el cas de que una persona estigui en el mòvil de casa seva mirant un directe a través d'una pàgina web
+    i decidís sortir de casa continuant mirant el directe  \textbf{EXPLICAR PROBLEMA ESTABLECIMIENTO - MUCHOS PAQUETES}
+}

@@ -1,86 +1,121 @@
-\section{Live-streaming state of art }
-
+\section{Estat de l'art sobre les tecnologies utilitzades}
 {
-    Live-streaming content is in its dawn. Although it is possible and it is being done nowadays, real-time content in Internet is still primitive
-    in the way we are delivering it. We are using brute-force to deliver huge amounts of real-time content. It is a matter of fact that 
-    the demand for this type of content is growing far faster than the CDN \footnote{CDN: Content Delivery Network} (from now on called servers)
-    are able to supply to the spectactors (from now on called clients).
-    
-    Even though someone might say it is almost every content via internet, there are still a lot of events that can not transmitted using internet 
-    because it cannot be supported\footnote{https://github.com/GrumpyOldTroll/wicg-multicast-receiver-api/blob/master/explainer.md} due to the heavy load
-    of users that need to managed. As Jake Holland from Akamai wrote on Github: "The capacity of CDNs and others to deliver popular content at scale is 
-    not keeping up with demand."
+    L'interés en les transmissions en directe ha fet que molts esforços d'empreses i grups de recerca
+    es focalitzin en desenvolupar noves tecnologies per fer front a la creixent demanda en termes de qualitat
+    i al mateix temps que donar servei cada cop a més clients. Les tecnologies que permeten aquestes transmissions
+    es centren principalment en dos grups: protocols i codificacions. No obstant, en el nostre cas nomès ens centrarem
+    en els protocols, perquè aquests poden funcionar independentment de les codificacions.
 
-    In april of 2020, Akamai achieved the new world record of peak traffic delivery which was 176 tbps. It seems a lot, however it is not. Making some linear
-    and quick easy maths it is easy to see that it is not. Keeping in mind that usually for real-time video we use CBR\footnote{Constant Bit-Rate} encoder in
-    order to squeeze the internet resources, for a 1080p video we need a bit-rate of 5 mbps, and for a 4k video, 20 mbps. This means that with the current
-    world-record we can arrive to 35.2 millions of simultaneous users for live-streaming content using a 1080p encoding and 8.8 millions users using 4k.
-    Considering that the world population with internet access is 5200 million people we are really faraway from delivering TV or Radio via Internet using
-    the current methods. What is more, the Fifa World Cup Finals 2018 were seen by 500 million people, 200 million to 300 million people were seeing in India the Cricket
-    World Cup in 2015 (whenever India is playing) and a large etcetera with a lot of content can be done.  The brute force does not seem like a good stategy for scaling 
-    anymore, maybe only for quick deployments.
-
-    The solution that is being discussed in this Final Degree Project proposes to use multicast instead of unicast in order to avoid this scalability limitation, due to
-    the fact that using this technology for distribute the same content to everyone is more efficient in terms of computation in the servers and of resources in general.
+    Per tal d'entendre millor el projecte, en els següents apartats s'explicaran el principis i objectius de les
+    tecnologies implicades. A l'annexe 1 hi ha un resum extens de l'evolució de les tecnologies implicades fins a arribar 
+    la creació de QUIC o l'ús que es fa avui en dia de multicast. Es recomana donar una ullada si hi ha alguna sigla o tecnologia 
+    que no s'entén.
 }
 
-\subsection{Technologies used at the moment}
+\subsection{Contexte de QUIC}
 {
-    TCP is at the moment the main protocol over Internet. Almost every service at the moment uses it and HTTP is not an exception. When doing a HTTP request or response (versions 1.0,
-    1.1 and 2), TCP is being used. Even though, it is almost 50 years old and the internet has evolved and has grown significantly, it is still the main protocol. However, it is reaching
-    its full capacity in two particular scenarios: websites with small pageload and real-time content such as TV and Radio. Although, the main goal of this project is to focus on the 
-    real-time content delivery, the small pageload problem will also be explained briefly because is what QUIC tries to solve as originally planned.    
-    
-    Most of the is requested via a navigator like Firefox or Google Chrome, which use the HTTP protocol as the main communication protocol which the use of TCP. It is clear and obvious
-    that for large content which is not in real-time that can be stored like films, TCP is not a big bottleneck. However, in the last several years, with the
-    raising of important services (like e-commerce) and cyberattacks, specially spoofing, the use of TLS\footnote{TLS : Transport Security Layer} has also became a standard. Websites that
-    deliver real-time video like Youtube or Twitch are not an exception either. This also adds some complexity and workload delivering the website to the client.
+    Transmission Control Protocol (TCP) és un protocol dissenyat per enviar un fluxe de dades entre dos punts. Les dades son enviades
+    pel sistema TCP que s'encarrega d'assegurar que les dades arribaran a l'altre extrem extactament iguals o que en el cas de que no
+    fos així indicar que hi ha un error a la connexió.
 
-    When someone connects to a internet using a web-browser at least it need 3 packets for for stablishing the TCP connection, 3 for stablishing the TLS connection over TCP and 2 HTTP packets (request and response).
-    It is being received the first byte of content after the 7th packet! This handshake, although being the most being used, it is not optimal. When a really small website is being delivered (imagine an html "Hello World!"),
-    a load of resources and packets are being used for a deliver a small packet. More control stuff than content. It gets even worse, if it is the case that have already stablished a connection earlier and after a while there
-    is a new request; all this handshake has to be done again because TCP and TLS are a connection oriented protocols, but HTTP is not. QUIC aims to solve this type of problems.
+    Per aconseguir això, TCP parteix les dades en petits paquets i afegeix una sèrie de capçaleres. Aquestes dades extres inclouen un 
+    número de seqüència que s'utilitza per detectar quan un paquet s'ha perdut o arribar tard (Out-of-order) i una suma de comprobació
+    s'utilitza per detectar que hi ha hagut un error a les dades. Quan algún problema ocorreix, TCP automàticament utilitza un algorisme
+    que es diu Automatic Repeat Request (ARQ) en el que es notifica al emisor que reenvïi el paquet perdut o mal transmés.
+
+    En la majoria d'implementacions, quan hi ha TCP detecta un error pararà la transmissió fins que l'error s'hagi resolt o consideri
+    que la connexió ha fallat. En cas d'utilitzar un connexió multiplexada en diversos fluxos de dades, com en el cas de HTTP/2, tots
+    es veuran afectats i es pararan encara que nomès hi hagi hagut un error en un fluxe. Per exemple, si hi ha un error carregant una
+    imatge d'una pàgina web, tota la resta de fluxos hauran d'esperar fins que el problema s'hagi solucionat. Això es coneix com el 
+    problema de encapçalament de linea o head-of-line blocking.
+
+    TCP està dissenyat com una tuberia de dades en la qual no entén el que s'està enviant. Si es requereixen necessitats adiccionals 
+    com encriptació (TLS), aquests s'han de fer des de capes superiors a TCP, utilitzant TCP per comunicar-se amb l'altre extrem 
+    que utilitza software semblant. Cadascún d'aquests protocols necessita el seu propi \textit{handshake}. Normalment això implica
+    que hi hagin varis intercanvis de paquets de sol·licitud i resposta per establir la connexió fins que aquesta finalment s'ha
+    establert. Això pot arribar a ser un molt greu problema en sistemes de comunicacions amb alta latència, ja que pot significar
+    sobrecàrrega de dades de control en el transcurs de la connexió.
 }
-\subsection{The new standard: QUIC}
+
+\subsection{QUIC}
+{   
+    QUIC és un nou protocol d'Internet que es diu que canviarà com funciona actualment Internet. Daniel Stenberg, creador de
+    l'aplicació curl i un dels contribuidors a l'estàndard de QUIC, va dir que fins ara HTTP s'ha fet sobre TCP i això ha
+    implicat grans limitacions, però amb la vinguda d'aquest nou protocol (QUIC), les regles del joc podràn canviar 
+    millorant les velocitats i demés aspectes de l'Internet actual. 
+    
+    A principis de la dècada passada, a Google varen començar a platejar un nou estàndard pensat per substituir TCP i al mateix
+    temps simplificar i millorar coses com la seguretat o que l'establiment del canal fos el més ràpid possible inclús arribant
+    al punt de que en la primera resposta el servidor pogués donar informació útil al client. Amb aquesta idea en ment varen
+    començar a treballar en el que anomenaren Quick UDP Internet Protocol o QUIC. 
+
+    Avui en dia es tracta d'un estàndard redactat publicat en els RFC 8999 (Version-independent Properties of QUIC),
+    \textbf{RFC 9000} (QUIC: A UDP-Based multiplexed and Secure Transport), RFC 9001 (Using TLS to Secure QUIC) i RFC 9002 (QUIC Loss
+    Detection and Congestion Control). L'estàndard de QUIC de Google es coneix com gQUIC a dia d'avui i està pràcticament deixat.
+    Es recomana l'ús de l'estàndard proposat per l'IETF que va sortir en Maig de 2021.
+
+    A l'inici aquest protocol estava pensant per treballar pràcticament en la capa de transport (capa L4 del model OSI). No obstant,
+    varen trobar un greu problema amb com s'havien implementat els dos protocols predominants fins el moment, TCP i UDP: estaven 
+    implementats en la majoria de nuclis dels sistemes operatius. Això implica que el desplegament o actualització d'un protocol 
+    sigui extremadament lento i pugui tardar més de una dècada. Sobretot també s'ha de pensar que hi ha molts firewalls que 
+    no accepten tràfic que no sigui d'aquests dos protocols.
+
+    Al veure, aquesta situació varen optar per una solució en una capa superior, la qual normalment està implementada en l'espai d'usuari i 
+    sol ser més fàcil d'actualitzar a priori\footnote{En teoria hauria de ser així, però per exemple en el cas de TLS 1.2 va ser un problema
+    molt gran la seva actualització. Recomanat el article de Cloudflare al respecte. Està a la bibliografia}. Donat que UDP és un protocol
+    tan sencill i que delega pràcticament totes les tasques de retransmissions o control de fluxe a capes superiors, varen decidir fer ús
+    d'aquest per assegurar la interoperabilitat en els nodes intermitjos que no entenien aquest nou protocol. Aconseguit saltar aquesta 
+    gran barrera, ja varen poder començar a treballar en els aspectes d'aquest nou protocol.
+}
+
+\subsubsection{QUIC: establiment de la connexió}
+{
+    Un dels aspectes relevant de QUIC és que utilitza menys paquets per arribar a establir la connexió inicialment. La filosofia per poder
+    arribar a aconseguir això és que es realitzi el \textit{handshake} tant a nivell de connexió (imitant TLS) com a nivell de seguretat (TLS).
+
+    Si comparen el \textit{handshake} de QUIC, que inclou implícitament el \textit{handshake} de TLS 1.3, amb el \textit{handshake} de TCP + TLS 1.2
+    podrem observar que el número de paquets intercanviats entre els dos extrems és molt major en el segon cas. El problema resideix en que al mirar 
+    als dos protocols com dos protocols diferents, llavors l'establiment de la connexió primer s'ha de fer per TCP i després per TLS. A QUIC es 
+    proposa fer els dos al mateix temps.
+
+    \begin{figure}%
+        \centering
+        \subfloat[\centering label 1]{{\includegraphics[width=5cm]{img1} }}%
+        \qquad
+        \subfloat[\centering label 2]{{\includegraphics[width=5cm]{img2} }}%
+        \caption{2 Figures side by side}%
+        \label{fig:example}%
+    \end{figure}
+
+
+
+
+
+    És més, en cas de que
+    s'hagi establert prèviament la connexió i es vol reanudar pot arribar al punt de rebre dades des del \ac{RTT}.  
+}
+
+\subsubsection{QUIC: Multiplexat}
+{
+
+}
+
+\subsubsection{QUIC: Control de fluxe a nivell de connexió i de paquets de dades}
 {
     
-    It is clear and obvious that for large content that can be stored in a small buffer and does not need to be real-time we can use a really known 
-    protocol that have been around for years which is TCP. It is the main protocol for most of the services in the internet and has been even implemented
-    in the kernel of most of the devices. Many of the devices that rule internet like firewalls or load-balancers were designed bearing in mind that the
-    protocol that had to be used was TCP. During many years it was not a priority to use other transport layer protocols except in rare case.
-
-    Nowadays, might be surprising that we use that procotol that is end-to-end to deliver the same real-time content to a large amount of spectactors (for
-    now on they will be called clients)\footnote{In the Annexe I there is a larger explanation and details on how to test this with famous websites at the
-    moment}. It is easy to see that this approach although having many withdrawals it has some benefits.
-
-    The solution that is being discussed in this Final Degree Project proposes to use multicast instead of unicast in order to avoid this scalability limitation, due to
-    the fact that using this technology for distribute the same content to everyone is more efficient in terms of computation in the servers and of resources in general.
 }
 
-\subsection{Benefits of using TCP for live-streaming}
+\subsubsection{QUIC: Multiplexat}
 {
-    The main benefit with this approach for real-time content is the easiness on the programming and mounting at first time. All devices (or almost all) can
-    bypass internet elements when they talk TCP. 
- 
     
-    At the current moment, it is the standard which means less complexity, more tools and easier to implement. For
-    young services that are not expected to growth a lot TCP is more than enought for most cases.
-
-    At the same time, there 
 }
 
-\subsection{UDP}{
+\subsubsection{QUIC: Autenticació i encriptació de la capçalera i càrrega útil}
+{
     
-    Nevertheless, in the last decade it has been a growing interest in other procotols that are end-to-end and allow to expand functionalities in upper layers:
-    UDP\footnote{UDP: User Datagram Protocol}. It is a really simple protocol with almost 0 functionalities aside from passing the content to the upper layer.
-    It has been around since the creation of the internet. That means, like with TCP, is implemented in the kernel. Changing the kernel of all the devices in
-    the internet it is imposible 
 }
 
-\subsection{Topic}
-
-Here you have a couple of references about LaTeX ~\cite{latexcompanion} and electrodynamics \cite{einstein}.
-
-\bigskip
-
-\subsection{Topic}
+\subsubsection{QUIC: Migració de la connexió}
+{
+    
+}

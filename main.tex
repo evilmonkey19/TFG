@@ -1,5 +1,4 @@
-\documentclass[a4paper,12pt]{article}
-
+\documentclass[a4paper]{article}
 \input{tools/packages.tex}
 \input{tools/styles.tex}
 \input{tools/acro.tex}
@@ -20,7 +19,7 @@
 \listoftables
 
 \newpage
-\printacronyms[include=abbrev,name=Abbreviations]
+%\printacronyms[include=abbrev,name=Abbreviations]
 
 %%% ABSTRACT %%%
 \newpage
@@ -39,10 +38,6 @@
 \input{chapters/02_stateofart}
 
 %%% METHODOLOGY %%%
-%\clearpage\section{Methodology / project development: }
-
-%{The Methodology is included in this chapter and should include all relevant %methods that were utilized as well as
-%research methods and measurements, software and hardware development, ...}
 
 %%% RESULTS: SECTIONS %%%
 
@@ -57,7 +52,6 @@
 
 \subsection{Subsection}
 \label{sec:subsec3.1}
-The book \cite{latexcompanion} \lipsum[15]
 
 \include{codi_tempdistrib}
 
@@ -74,7 +68,6 @@ The book \cite{latexcompanion} \lipsum[15]
 \subsection{Overview}
 \label{subsec:sect5Overview}
 \lipsum[10]
-Visite the Knuth repository \cite{knuthwebsite}.
 
 %%% TESTING %%%
 \clearpage
@@ -115,8 +108,9 @@ impact, describe it in this section.}
 
 \medskip
 
-\bibliographystyle{unsrt}
-\bibliography{bibliography.bib}
+%% Da problemas, solucionarlo
+%\bibliographystyle{unsrt}
+%\bibliography{bibliography.bib}
 
 %%% ANNEX %%%
 \clearpage
