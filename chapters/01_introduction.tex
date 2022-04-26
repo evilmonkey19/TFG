@@ -45,11 +45,11 @@
     
     Per altra banda, al llarg dels anys, a les connexions unicast normalment han fet ús d'un protocol anomenat \ac{TCP}. Aquest protocol va ser especialment
     important en els anys 90 i a principis dels 2000 perquè Internet pogués funcionar i popularitzar-se, ja que les connexions eren lentes i poc fiables.
-    Aquest protocol incorpora una sèrie de mecanismes per intentar pal·liar aquests qüestió. No obstant això, amb la millora de les connexions i la seva fiabilitat
+    Aquest protocol incorpora una sèrie de mecanismes per intentar pal·liar aquesta qüestió. No obstant això, amb la millora de les connexions i la seva fiabilitat
     hi ha altres protocols que poden ser més útils i millors en l'Internet que tenim actualment, incorporant funcionalitats que antigament no s'havien plantejat
     o que no semblaven rellevants. Un protocol que pareix que substituirà \ac{TCP} és QUIC, ja que millora bastant certs aspectes de TCP com l'establiment
-    de la connexió molt més ràpidament (menys RTTs) o el poder restablir la sessió amb el servidor en canviar de xarxa.
-
+    de la connexió molt més ràpidament (menys RTTs) o el fet de poder restablir la sessió amb el servidor en canviar de xarxa.
+    
 }
 
 \subsection{Transfons del project}
@@ -71,12 +71,11 @@
 \subsection{Objectius}
 {
     El principal objectiu d'aquest projecte és desenvolupar un servidor de contingut en temps real que faci ús de la tecnologia
-    QUIC sobre \ac{IP} multicast utilitzant la llibrería de software lliure. Al mateix temps, es preten fer una comparativa de les
-    avantatges i inconvenients front al desenvolupament d'un servidor similar utilitzant QUIC sobre IP unicast; és dir, el perfil
+    QUIC sobre \ac{IP} multicast utilitzant la llibreria de software lliure. Al mateix temps, es pretén fer una comparativa de l'avantatge i inconvenients enfront del desenvolupament d'un servidor similar fent servir QUIC sobre IP unicast; és a dir, el perfil
     de QUIC genèric que proposa el \ac{RFC} 9000.
 
-    El sistema estarà conformat per un servidor que rebra peticions dels clients que demanaràn el contingut de radio en directe a
-    través d'\ac{IP}. Aquest servidor redireccionarà en el cas de multicast al fluxe multicast o enviarà directament la informació en
+    El sistema estarà conformat per un servidor que rebrà peticions dels clients que demanaran el contingut de ràdio en directe a
+    través d'\ac{IP}. Aquest servidor reencaminarà en el cas de multicast al flux multicast o enviarà directament la informació en
     cas d'unicast.
 
     \textbf{[ESBORRANY - FALTA L'IMATGE FINAL]}
@@ -87,13 +86,13 @@
         \caption[Trafic d'Internet]{\footnotesize{Topologia de la configuració plantejada.}}
     \end{figure}
 
-    La arquitectura del sistema està basada en la següent escenari: s'utilitzarà un reproductor d'audio en directe, aquest serà captat
-    per un servidor intermig i li passarà el contingut al servidor que hem desenvolupat perquè el transmeti a través de la xarxa fins als
-    clients perquè ho reproduexin.
-
+    L'arquitectura del sistema està basada en el següent escenari: s'utilitzarà un reproductor d'àudio en directe, aquest serà captat
+    per un servidor intermedi i li passarà el contingut al servidor que hem desenvolupat perquè el transmeti a través de la xarxa fins als
+    clients perquè ho reprodueixin.
+    
     El que es pretén demostrar és que hi ha un límit d'usuaris en el cas d'unicast i, en canvi, no hi ha un límit en el cas d'usuaris multicast.
-    Donat que la majoria de la gent accedeix a través d'HTTP als serveis d'aquest tipus de contingut és farà ús de QUIC, un protocol desenvolupat
-    pensat en HTTP. Cal indicar que QUIC permet l'ús de fils simultànis que s'utilitzaràn per enviar tràfic també a través de multicast. El perfil
+    Donat que la majoria de la gent accedeix a través d'HTTP als serveis d'aquest tipus de contingut es farà ús de QUIC, un protocol desplegat
+    pensat en HTTP. Cal indicar que QUIC permet l'ús de fils simultanis que es faran servir per enviar tràfic també a través de multicast. El perfil
     de QUIC en el cas de multicast difereix en alguns paràmetres i configuracions d'un perfil de QUIC normal.
 }
 
@@ -102,47 +101,47 @@
     \textbf{Requeriments del projecte}:
     \begin{itemize}
         \item Proveir un sistema integrat de transmissió de contingut en directe tant per la part del client
-                com la part del servidor que permiti la transmissió via unicast i/o multicast.
-        \item Donar una guia als usuaris finals per fer la instal·lació tant simple com sigui possible (annexe ?)
+        com la part del servidor que permiti la transmissió via unicast i/o multicast.
+        \item Donar una guia als usuaris finals per fer la instal·lació tan simple com sigui possible (annexe?)
         \item Tot el software extern o implementat ha de ser gratuït i de codi lliure.
         \item Evaluar la solució final emulant-la en diferents escenaris i proveir uns resultats consistents.
-        \item La transferència del contingut ha de ser en el màxim possible fluida i continua.
+        \item La transferència del contingut ha de ser en el màxim possible fluid i continua.
         \item El software desenvolupat ha de ser el més flexible possible per poder utilitzar-lo en futures
-                implementacions d'altres softwares si es volgués.
+        implementacions d'altres softwares si es volgués.
         \item S'ha de poder avaluar el tràfic de manera quantitativa i qualitativa.
     \end{itemize}
     
     \textbf{Especificacions del projecte}:
     \begin{itemize}
         \item Hi ha d'haver com a mínim dos clients reben el contingut, ja que si no multicast deixa de tenir sentit encara
-                que és viable fer-ho per un.
+        que és viable fer-ho per un.
         \item El mostreig de la ràdio ha de poder variar durant la transmissió.
-        \item Per evaluar el sistema en un entorn controlat, el servidor i els clients seràn màquines virtual Linux que corren
-                damunt el mateix sistema operatiu; Linux també.
-        \item S'evaluarà el tràfic amb eines d'ús extensiu, proveint els filtres necessaris per decodificar el missatges transmessos.
+        \item Per avaluar el sistema en un entorn controlat, el servidor i els clients seran màquines virtual Linux que corren
+        damunt el mateix sistema operatiu; Linux també.
+        \item S'avaluarà el tràfic amb eines d'ús extensiu, proveint els filtres necessaris per descodificar els missatges transmesos.
     \end{itemize}
 }
 
 \subsection{Pla de feina}
 {
-    En aquesta secció de document es descriu en detall tots els blocs de treball en el que s'ha dividit la feina i els temps (Diagram de Gantt)
+    En aquesta secció de document es descriu en detall tots els blocs de treball en el qual s'ha dividit la feina i els temps (Diagrama de Gantt)
     en els que s'ha fet la tasca corresponent.
-
-    Al llarg del projecte, hi hagut varis canvis en respecte al pla original. Els principals canvis han estat els següents:
+    
+    Al llarg del projecte, hi ha hagut diversos canvis en respecte al pla original. Els principals canvis han estat els següents:
     \begin{itemize}
         \item \textbf{Lectura de \ac{RFC}s}. Donat la complexitat del projecte i la profunditat d'aquest s'ha vist que la quantitat de documentació
-                al respecte que s'hagut de llegir ha estat molt major de la que s'esperava, en gran part, ja que el nombre de tecnologies
-                necessaries per poder entendre i desenvolupar una plataforma com la que es demana és molt major del que cabria esperar a priori.
-                També, a causa de que s'utilitzen tecnologies noves com QUIC, hi han hagut \ac{RFC}s que han aparegut durant el transcurs com el 9221.
-        \item \textbf{Certs programes no existien o no compilaven}. Per fer l'escenari de proves s'ha volgut utilitzar un software nou per virtualitzar
-                la xarxa intentant imitar la de la pràctica \ac{IP} multicast de l'assignatura \ac{TCGI} del grau d'Enginyeria de serveis i sistemes
-                de telecomunicaciones del \ac{ETSETB}. Es va trobar que les màquines virtuals i el software utilitzat en aquelles màquines és antic i qualcún
-                ja no està disponible. S'ha buscat alternatives al respecte.
-
-    El que més ha dificultat i endarrerit el desenvolupament ha estat la lectura de la documentació ja que era molt més extensa del que s'esperava a priori
-    ademés de que també entrava en molt detalls que semblaven contradictoris amb la idea, encara que sembla que no. S'ha de pensar que la proposta és una
-    tecnologia que encara no s'ha desenvolupat del tot i encara està en procés, llavors això és més un prova del concepte que una demostració per ficar-ho
-    a producció. Encara s'està lluny d'aquest punt com es veurà al llarg del treball.
+        al respecte que s'ha hagut de llegir ha estat molt major de la qual s'esperava, en gran part, ja que el nombre de tecnologies
+        necessaries per poder entendre i desenvolupar una plataforma com la que es demana és molt major del qual es podria esperar a priori.
+        També, a causa que s'utilitzen tecnologies noves com QUIC, hi ha hagut \ac{RFC}s que han aparegut durant el transcurs com el 9221.
+        \item \textbf{Certs programes no existien o no compilaven}. Per fer l'escenari de proves s'ha volgut fer servir un software nou per virtualitzar
+        la xarxa intentant imitar la de la pràctica \ac{IP} multicast de l'assignatura \ac{TCGI} del grau d'Enginyeria de serveis i sistemes
+        de telecomunicaciones del \ac{ETSETB}. Es va trobar que les màquines virtuals i el software utilitzat en aquelles màquines és antic i qualcun
+        ja no està disponible. S'ha buscat alternatives al respecte.
+        
+        El que més ha dificultat i endarrerit el desenvolupament ha estat la lectura de la documentació, ja que era molt més extensa del que s'esperava a priori
+        a més que també entrava en molts detalls que semblaven contradictoris amb la idea, encara que sembla que no. S'ha de pensar que la proposta és una
+        tecnologia que encara no s'ha desenvolupat del tot i encara està en procés, llavors això és més una prova del concepte que una demostració per ficar-ho
+        a producció. Encara s'està lluny d'aquest punt com es veurà al llarg del treball.
     \end{itemize}
 }
 \subsubsection{Estructura de la feina}

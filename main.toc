@@ -65,23 +65,27 @@
 \contentsline {subsection}{\numberline {2.1}Contexte de QUIC}{15}{subsection.2.1}%
 \contentsline {subsection}{\numberline {2.2}QUIC}{15}{subsection.2.2}%
 \contentsline {subsubsection}{\numberline {2.2.1}QUIC: establiment de la connexió}{16}{subsubsection.2.2.1}%
-\contentsline {subsubsection}{\numberline {2.2.2}QUIC: Multiplexat}{16}{subsubsection.2.2.2}%
-\contentsline {subsubsection}{\numberline {2.2.3}QUIC: Control de fluxe a nivell de connexió i de paquets de dades}{16}{subsubsection.2.2.3}%
-\contentsline {subsubsection}{\numberline {2.2.4}QUIC: Multiplexat}{16}{subsubsection.2.2.4}%
-\contentsline {subsubsection}{\numberline {2.2.5}QUIC: Autenticació i encriptació de la capçalera i càrrega útil}{16}{subsubsection.2.2.5}%
-\contentsline {subsubsection}{\numberline {2.2.6}QUIC: Migració de la connexió}{16}{subsubsection.2.2.6}%
-\contentsline {section}{\numberline {3}Section 3}{17}{section.3}%
-\contentsline {subsection}{\numberline {3.1}Subsection}{17}{subsection.3.1}%
-\contentsline {section}{\numberline {4}Section 4}{19}{section.4}%
-\contentsline {subsection}{\numberline {4.1}Subsection 4.1}{19}{subsection.4.1}%
-\contentsline {subsection}{\numberline {4.2}Subsection 4.2}{20}{subsection.4.2}%
-\contentsline {section}{\numberline {5}Section 5}{21}{section.5}%
-\contentsline {subsection}{\numberline {5.1}Overview}{21}{subsection.5.1}%
-\contentsline {section}{\numberline {6}Experiments and results}{22}{section.6}%
-\contentsline {section}{\numberline {7}Budget}{23}{section.7}%
+\contentsline {subsubsection}{\numberline {2.2.2}QUIC: Migració}{16}{subsubsection.2.2.2}%
+\contentsline {subsubsection}{\numberline {2.2.3}QUIC: capçaleres més dinàmiques}{17}{subsubsection.2.2.3}%
+\contentsline {subsubsection}{\numberline {2.2.4}QUIC: Multiplexat}{17}{subsubsection.2.2.4}%
+\contentsline {subsubsection}{\numberline {2.2.5}QUIC: Control de fluxe a nivell de connexió i de paquets de dades}{18}{subsubsection.2.2.5}%
+\contentsline {subsubsection}{\numberline {2.2.6}QUIC: Autenticació i encriptació de la capçalera i càrrega útil}{18}{subsubsection.2.2.6}%
+\contentsline {subsection}{\numberline {2.3}Multicast}{18}{subsection.2.3}%
+\contentsline {subsubsection}{\numberline {2.3.1}Multicast: IGMP}{19}{subsubsection.2.3.1}%
+\contentsline {subsubsection}{\numberline {2.3.2}Multicast: la seguretat}{19}{subsubsection.2.3.2}%
+\contentsline {subsection}{\numberline {2.4}Programes i software important}{19}{subsection.2.4}%
+\contentsline {section}{\numberline {3}Section 3}{20}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Subsection}{20}{subsection.3.1}%
+\contentsline {section}{\numberline {4}Section 4}{22}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Subsection 4.1}{22}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Subsection 4.2}{23}{subsection.4.2}%
+\contentsline {section}{\numberline {5}Section 5}{24}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Overview}{24}{subsection.5.1}%
+\contentsline {section}{\numberline {6}Experiments and results}{25}{section.6}%
+\contentsline {section}{\numberline {7}Budget}{26}{section.7}%
 \babel@toc {english}{}
 \babel@toc {english}{}
-\contentsline {section}{\numberline {8}Environment Impact (Optional)}{24}{section.8}%
-\contentsline {section}{\numberline {9}Conclusions}{25}{section.9}%
-\contentsline {section}{\numberline {10}Future Work}{25}{section.10}%
-\contentsline {section}{Appendices}{26}{section*.21}%
+\contentsline {section}{\numberline {8}Environment Impact (Optional)}{27}{section.8}%
+\contentsline {section}{\numberline {9}Conclusions}{28}{section.9}%
+\contentsline {section}{\numberline {10}Future Work}{28}{section.10}%
+\contentsline {section}{Appendices}{29}{section*.25}%
