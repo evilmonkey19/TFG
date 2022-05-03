@@ -12,6 +12,51 @@
     que no s'entén.
 }
 
+
+\subsection{Multicast}
+{
+    \ac{IP} va néixer com un protocol per interconnectar xarxes d'àrea local amb tecnologies diferents. Aquestes xarxes funcionaven de manera
+    \textit{unicast}, un a un, o \textit{broadcast}, un per a tots. Malgrat això, l'any 1988 es va publicar el RFC 988 anomenat \cite{Host Extension for IP
+    Multicasting}. Aquest proposava fer una extensió de la tecnologia IP per permetre la connexió d'un emissor a molts receptors, però no tots, només els
+    que volguessin rebre la informació d'aquest.
+    
+    Per fer una analogia de multicast amb el nostre entorn quotidià, es podria dir que funciona com la \ac{TDT} o la ràdio. Es pot pensar com una antena que
+    emet el senyal i si vols rebre el senyal únicament ficat el canal o la freqüència a la qual aquesta emet per poder rebre i veure o escoltar la
+    transmissió, però si algú no la vol rebre no la pot ignorar.
+
+    \begin{figure}[H]
+        \label{fig:unicast_vs_broadcast_vs_multicast}
+        \centering
+        \includegraphics[width=\textwidth]{img/02_stateofart/unicast_vs_broadcast_vs_multicast.jpg}
+        \caption[Unicast vs Broadcast vs Multicast]{\footnotesize{En blau l'emissor de la senyal, en verd els usuaris que reben la senyal
+        i en vermell els que no. Imatge de \url{pc-solucion.es}}}
+    \end{figure}
+
+    Dins la tecnologia IP hi ha un rang d'adreces destinades a aquesta tecnologia. El rang és la classe D que va des de \textbf{224.0.0.0} fins
+    \textbf{239.255.255.255}.
+    
+    Encara que a priori sembla una idea força senzilla, en realitat, és molt complicada, ja que té diversos problemes associats, encara que la majoria
+    actualment ja tenen solució excepte un que s'esmentarà al final i és el seu gran problema a l'hora d'implementar-lo extensament. Normalment,
+    les qüestions d'IP multicast se solen derivar a capes superiors.
+}
+
+\subsubsection{Multicast: IGMP}
+{
+    Per poder dir a un router que pot arribar a rebre l'emissió que es vol rebre aquesta es fa ús d'un protocol anomenat \ac{IGMP} o Internet Group
+    Management Protocol. La idea d'aquest protocol és implementar un model de subscripció al senyal en el qual mitjançant un paquet que s'envia al
+    router a una distància 1 s'informa que es vol rebre l'emissió d'una direcció destinatària i un port concrets. Aquest protocol permet també dir
+    que la connexió ha d'arribar d'un lloc concret (\textit{source specific}).
+}
+
+\subsubsection{Multicast: la seguretat}
+{
+    Un dels majors problemes encara no resolts de multicast és l'encriptació de les comunicacions. El mètode actual per xifrar les comunicacions es
+    basa a canviar la clau d'accés cada poc temps transferint-la via un canal alternatiu (via \textit{unicast}). Malgrat que aquesta solució a priori
+    sembla suficient, si aquesta clau es comparteix a un usuari que no ha de poder veure el senyal (televisió de pagament per exemple) llavors la
+    transmissió multicast no és segura. És més, que es comparteixi la clau per qualsevol agent escoltant el senyal pot implicar altres riscos de
+    seguretat per la transmissió com la suplantació d'identitat per introduir codi maliciós.
+}
+
 \subsection{Contexte de QUIC}
 {
     Transmission Control Protocol (TCP) és un protocol dissenyat per enviar un flux de dades entre dos punts. Les dades són trameses
@@ -164,51 +209,74 @@
     especialment complicats.
 }
 
-\subsection{Multicast}
+\subsection{QUIC Multicast}
 {
-    \ac{IP} va néixer com un protocol per interconnectar xarxes d'àrea local amb tecnologies diferents. Aquestes xarxes funcionaven de manera
-    \textit{unicast}, un a un, o \textit{broadcast}, un per a tots. Malgrat això, l'any 1988 es va publicar el RFC 988 anomenat \cite{Host Extension for IP
-    Multicasting}. Aquest proposava fer una extensió de la tecnologia IP per permetre la connexió d'un emissor a molts receptors, però no tots, només els
-    que volguessin rebre la informació d'aquest.
+    Com s'ha pogut veure fins ara, QUIC és un protocol destinat per ser unicast completament ja que inclou principalment mecanismes de control de fluxe o 
+    retransmissió del paquet entre d'altres. No obstant, es pot arribar a fer un perfil concret de QUIC pel cas de multicast, ja que encara que no s'aprofiti
+    tant sí que és útil per evitar les \textit{middleboxes} com routers o firewalls a no tallar el tràfic multicast.
+
+    La avantatge principal que pot oferir fer un perfil concret de QUIC per multicast és que aquest protocol ja està establert com un estàndard. Un dels majors
+    problemes de les xarxes de comunicacions actuals resideix a la hora fer actualització de software als \textit{middleboxes} i a vegades la mala implementació
+    de certs estàndards (recordar el cas de TLS 1.1 a 1.2 i TLS 1.2 a 1.3). Llavors, el plantejament de fer un estàndard des de 0 normalment no sol ser una bona 
+    idea en general.
+
+    Per altra banda, el ús de QUIC podria permetre dues avantatges més. Per una part, el multiplexat pot ser força interessant sobretot per \textit{streamings} 
+    de video, ja que en un \textit{stream} es pot enviar la imatge, en un altre l'audio i en un altre els subtitols per exemple. Per altra part, el disposar 
+    d'un rang tan gran de \textit{Connections ID}s, 2048 bits, permet destinar una part d'aquest rang per direccions multicast i altra part per els homònims 
+    en unicast per senyalització; no obstant, aquesta última proposta també es pot fer amb Session IDs com amb NGHQ i proposa el esborrany de Multicast over QUIC,
+    aprofitant el ús de Connection ID 0 (mirar [QUIC Transport]).
     
-    Per fer una analogia de multicast amb el nostre entorn quotidià, es podria dir que funciona com la \ac{TDT} o la ràdio. Es pot pensar com una antena que
-    emet el senyal i si vols rebre el senyal únicament ficat el canal o la freqüència a la qual aquesta emet per poder rebre i veure o escoltar la
-    transmissió, però si algú no la vol rebre no la pot ignorar.
+    De manera molt breu, alguns aspectes tècnics a tenir en compte sobre aquest perfil és que es recomana tenir un canal alternatiu on es faci el \textit{handshake},
+    la retransmissió de paquets perduts i demés. la connexió multicast únicament ha d'enviar paquets unidireccionalment del servidor al client en format \textit{short
+    header}. Tots els clients han de tenir el mateix \textit{Connection ID} de destí.
 
-    \begin{figure}[H]
-        \label{fig:unicast_vs_broadcast_vs_multicast}
-        \centering
-        \includegraphics[width=\textwidth]{img/02_stateofart/unicast_vs_broadcast_vs_multicast.jpg}
-        \caption[Unicast vs Broadcast vs Multicast]{\footnotesize{En blau l'emissor de la senyal, en verd els usuaris que reben la senyal
-        i en vermell els que no. Imatge de \url{pc-solucion.es}}}
-    \end{figure}
+    Actualment nomès hi ha un esborrany de l'IETF escrit per Lucas Pardue, Sam Hurst i Richard Bradbury que es diu HTTP sobre QUIC multicast. No obstant, a partir de 
+    març de 2022, també l'enginyer de Akamai Jake Holland està escrivint un esborrany al respecte, encara que en aquest cas, actualment està en una fase inicial.
+}
 
-    Dins la tecnologia IP hi ha un rang d'adreces destinades a aquesta tecnologia. El rang és la classe D que va des de \textbf{224.0.0.0} fins
-    \textbf{239.255.255.255}.
+\subsection{Software i llibreries importants}
+\subsubsection{VNX: Virtual Network over Linux}
+{
+    És un software general \textit{open-source} de virtualització dissenyat per construir xarxes de proves virtuals automàticament. Permet la definició i 
+    desplegament automàtic de escenaris de xarxa construit amb màquines virtuals de diferents tipus (Linux, Windows, FreeBSD, Olive o routers Dynamips, etc)
+    interconnectats seguint una topologia definida per l'usuari, permitint inclús connectar aquesta a xarxes externes.
+
+    Esta desenvolupat pel professor David Fernández de l'Universitat Politècnica de Madrid (UPM).
+}
+
+\subsubsection{Wireshark}
+{
+    Wireshark és un programari lliure i de codi obert amb la funcionalitat d'analitzador de paquets de xarxes de comunicació. Wireshark s'empra per 
+    a solucionar problemes en xarxes, desenvolupament i anàlisi de programari i tasques educatives. Originàriament s'anomenava Ethereal i va ser 
+    reanomenat Wireshark el maig del 2006 per causes comercials.
+
+    Wireshark és molt similar al programari tcpdump, però amb un una interfície gràfica d'usuari i més opcions de menú per a ordenar i filtrar. Es pot
+    emprar per analitzar tot tipus de protocols, des de nivell capa 2 com Ethernet fins a nivells superiors com HTTP.
+}
+
+\subsubsection{NGTCP2: QUIC unicast}
+{
+    És una llibreria escrita en C++ que permet enviar missatges unicast utilitzant el protocol QUIC. Està basada en el RFC 9000 [QUIC Transport] i està
+    implementat casi tot l'estàndard. Té una sèrie d'exemples bastant útils encara que complicats d'entendre a primer cop d'ull. Als annexes hi ha un exemple
+    d'ús del servidor i el client.
+}
+
+\subsubsection{NGHQ: QUIC multicast}
+{
+    És una llibreria desenvolupada en codi C que permet enviar paquets QUIC sobre multicast. Està basada en el part de l'esborrany 7 d'HTTP sobre Multicast QUIC.
+    Una llibreria una mica complicada d'utilitzar pero s'han fet petites modificacions per poder adaptar-la al projecte.
     
-    Encara que a priori sembla una idea força senzilla, en realitat, és molt complicada, ja que té diversos problemes associats, encara que la majoria
-    actualment ja tenen solució excepte un que s'esmentarà al final i és el seu gran problema a l'hora d'implementar-lo extensament. Normalment,
-    les qüestions d'IP multicast se solen derivar a capes superiors.
+    Està escrita per Sam Hurst, Lucas Pardue i Richard Bradbury, enginyers de la \ac{BBC}.  
 }
 
-\subsubsection{Multicast: IGMP}
+\subsubsection{Mencions importants}
 {
-    Per poder dir a un router que pot arribar a rebre l'emissió que es vol rebre aquesta es fa ús d'un protocol anomenat \ac{IGMP} o Internet Group
-    Management Protocol. La idea d'aquest protocol és implementar un model de subscripció al senyal en el qual mitjançant un paquet que s'envia al
-    router a una distància 1 s'informa que es vol rebre l'emissió d'una direcció destinatària i un port concrets. Aquest protocol permet també dir
-    que la connexió ha d'arribar d'un lloc concret (\textit{source specific}).
-}
-
-\subsubsection{Multicast: la seguretat}
-{
-    Un dels majors problemes encara no resolts de multicast és l'encriptació de les comunicacions. El mètode actual per xifrar les comunicacions es
-    basa a canviar la clau d'accés cada poc temps transferint-la via un canal alternatiu (via \textit{unicast}). Malgrat que aquesta solució a priori
-    sembla suficient, si aquesta clau es comparteix a un usuari que no ha de poder veure el senyal (televisió de pagament per exemple) llavors la
-    transmissió multicast no és segura. És més, que es comparteixi la clau per qualsevol agent escoltant el senyal pot implicar altres riscos de
-    seguretat per la transmissió com la suplantació d'identitat per introduir codi maliciós.
-}
-
-\subsection{Programes i software important}
-{
-
+    \begin{itemize}
+        \item \textbf{ffmpeg}: és una eina que permet modificar, retallar, enviar, etc fluxes de videos principalment.
+        \item \textbf{smcroute}: Static Multicast Route és una eina que permet crear rutes estàtiques per enrutar el tràfic multicast.
+        \item \textbf{mnc}: versió multicast de la clàssica eina Netcat, encara bastant més limitada.
+        \item \textbf{mcsender}: emet una senyal multicast cada segon. Serveix per enviar tràfic multicast i comprovar que funciona l'enrutament.
+        \item \textbf{vlc}: Visualitzador de video.
+        \item \textbf{lxc}: Linux Containers serveix per crear una màquina virtual pero sense haver de crear el kernel. Més eficient que una màquina \ac{KVM}.
+    \end{itemize}
 }
