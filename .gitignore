@@ -1,13 +1,13 @@
 *.aux
-*.acr
 *.bbl
+*.bcf
 *.blg
 *.fdb_latexmk
 *.fls
-*.lof
 *.log
+*.lol
 *.lot
+*.xml
 *.out
-*.gz
 *.toc
-
+*.gz

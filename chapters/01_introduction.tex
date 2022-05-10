@@ -1,5 +1,4 @@
 \section{Introducció}
-
 {
     En els darrers anys, els serveis de contingut en temps real han experimentat un creixement quasi exponencial, sobretot arran de la
     popularitat de pàgines web com \url{youtube.com}, \url{twitch.tv} o sobretot amb l'ús de les videoconferències durant la pandèmia.
@@ -70,55 +69,31 @@
 
 \subsection{Objectius}
 {
-    El principal objectiu d'aquest projecte és desenvolupar un servidor de contingut en temps real que faci ús de la tecnologia
-    QUIC sobre \ac{IP} multicast utilitzant la llibreria de software lliure. Al mateix temps, es pretén fer una comparativa de l'avantatge i inconvenients enfront del desenvolupament d'un servidor similar fent servir QUIC sobre IP unicast; és a dir, el perfil
-    de QUIC genèric que proposa el \ac{RFC} 9000.
-
-    El sistema estarà conformat per un servidor que rebrà peticions dels clients que demanaran el contingut de ràdio en directe a
-    través d'\ac{IP}. Aquest servidor reencaminarà en el cas de multicast al flux multicast o enviarà directament la informació en
-    cas d'unicast.
-
-    \textbf{[ESBORRANY - FALTA L'IMATGE FINAL]}
-    \begin{figure}[H]
-        \label{fig:esborrany_configuracio}
-        \centering
-        \includegraphics[width=15cm, height=7.2cm]{img/01_introduccio/topologia_conf.png}
-        \caption[Trafic d'Internet]{\footnotesize{Topologia de la configuració plantejada.}}
-    \end{figure}
-
-    L'arquitectura del sistema està basada en el següent escenari: s'utilitzarà un reproductor d'àudio en directe, aquest serà captat
-    per un servidor intermedi i li passarà el contingut al servidor que hem desenvolupat perquè el transmeti a través de la xarxa fins als
-    clients perquè ho reprodueixin.
-    
-    El que es pretén demostrar és que hi ha un límit d'usuaris en el cas d'unicast i, en canvi, no hi ha un límit en el cas d'usuaris multicast.
-    Donat que la majoria de la gent accedeix a través d'HTTP als serveis d'aquest tipus de contingut es farà ús de QUIC, un protocol desplegat
-    pensat en HTTP. Cal indicar que QUIC permet l'ús de fils simultanis que es faran servir per enviar tràfic també a través de multicast. El perfil
-    de QUIC en el cas de multicast difereix en alguns paràmetres i configuracions d'un perfil de QUIC normal.
+    \begin{itemize}
+        \item Desenvolupar un servidor servidor QUIC unicast i un servidor QUIC multicast per distribuir contingut en temps real.
+        \item Conèixer en profunditat les avantatges i limitacions de la tecnologia QUIC \cite{rfc9000}
+        \item Discutir la possibilitat de fer un perfil concret de QUIC per Multicast.
+        \item Demostrar les limitacions d'unicast en la retransmissions a un gran número de clients i com Multicast pot ser una solució.
+    \end{itemize}
 }
 
 \subsection{Requeriments i especificacions}
 {
     \textbf{Requeriments del projecte}:
     \begin{itemize}
-        \item Proveir un sistema integrat de transmissió de contingut en directe tant per la part del client
-        com la part del servidor que permiti la transmissió via unicast i/o multicast.
-        \item Donar una guia als usuaris finals per fer la instal·lació tan simple com sigui possible (annexe?)
-        \item Tot el software extern o implementat ha de ser gratuït i de codi lliure.
-        \item Evaluar la solució final emulant-la en diferents escenaris i proveir uns resultats consistents.
-        \item La transferència del contingut ha de ser en el màxim possible fluid i continua.
-        \item El software desenvolupat ha de ser el més flexible possible per poder utilitzar-lo en futures
-        implementacions d'altres softwares si es volgués.
-        \item S'ha de poder avaluar el tràfic de manera quantitativa i qualitativa.
+        \item Proveir un sistema de transmissió de contingut en directe via unicast i/o multicast.
+        \item Possibilitat l'avaluació del tràfic generat de manera quantitativa i qualitativa.
+        \item Implementar software gratuït i de codi lliure.
+        \item Proveir una guia a l'usuari final per facilitar l'ús i instal·lació dels softwares tant
+                del client com del servidor [Annexe I].
     \end{itemize}
     
     \textbf{Especificacions del projecte}:
     \begin{itemize}
-        \item Hi ha d'haver com a mínim dos clients reben el contingut, ja que si no multicast deixa de tenir sentit encara
-        que és viable fer-ho per un.
-        \item El mostreig de la ràdio ha de poder variar durant la transmissió.
-        \item Per avaluar el sistema en un entorn controlat, el servidor i els clients seran màquines virtual Linux que corren
-        damunt el mateix sistema operatiu; Linux també.
-        \item S'avaluarà el tràfic amb eines d'ús extensiu, proveint els filtres necessaris per descodificar els missatges transmesos.
+        \item Avaluar el tràfic generat per multicast i unicast en escenaris amb diversos clients escoltant
+                la retransmissió.
+        \item Creació d'un entorn de proves virtual, on el servidor i els clients seràn màquines virtuals Linux.
+        \item Avaluar el tràfic amb eines d'ús extensiu, proveint els filtres necessaris per descodificar els missatges transmesos.
     \end{itemize}
 }
 
