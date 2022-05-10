@@ -7,19 +7,11 @@
 
 %%% COVER %%%
 \include{others/cover}
-
-%%% INDEX %%%
 \newpage
-\tableofcontents
 
-%%% LISTS %%%
-\newpage
-\listoffigures
-\lstlistoflistings
-\listoftables
+%%% CONTINGUTS %%%
+\include{others/continguts}
 
-\newpage
-%\printacronyms[include=abbrev,name=Abbreviations]
 
 %%% ABSTRACT %%%
 \newpage
@@ -36,14 +28,14 @@
 
 \input{chapters/01_introduction}
 
+%%% StateOfTheArt %%%
 \clearpage
 
-%%% StateOfTheArt %%%
 \input{chapters/02_stateofart}
 
-\clearpage
 
 %%% METHODOLOGY %%%
+\clearpage
 \input{chapters/03_metodologia}
 
 %%% RESULTS: SECTIONS %%%
@@ -60,16 +52,11 @@
 
 %%% BUDGET %%%
 \clearpage
-\section{Budget}
-{\selectlanguage{english}
-\foreignlanguage{english}{Depending on the thesis scope this document should include:}}
+\include{chapters/05_Pressupost}
 
 %%% ENVIRONMENT %%%
 \clearpage
-\section[Environment Impact (Optional)]{{Environment Impact (Optional)}}
-
-{Whether the tasks that have led to the realization of this thesis, as if its results have identifiable environmental
-impact, describe it in this section.}
+\include{chapters/06_Impacte_ambiental}
 
 %%% CONCLUSIONS AND FUTURE %%%
 \clearpage

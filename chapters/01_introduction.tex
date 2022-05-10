@@ -3,13 +3,14 @@
     En els darrers anys, els serveis de contingut en temps real han experimentat un creixement quasi exponencial, sobretot arran de la
     popularitat de pàgines web com \url{youtube.com}, \url{twitch.tv} o sobretot amb l'ús de les videoconferències durant la pandèmia.
     No obstant això, les tècniques actuals per distribuir aquest tipus de contingut, malgrat haver millorat bastant amb el desenvolupament
-    d'eines com \ac{WebRTC}, encara és un problema molt greu tant a la part dels servidors, principalment per les \ac{CDN}, com també pel
+    d'eines com \ac{WebRTC}, encara representen un problema molt greu tant a la part dels servidors, principalment per les \ac{CDN}, com també pel
     volum de tràfic que implica a les xarxes, principalment pels \ac{ISP}. De fet, s'està tornant una qüestió tecnològica tant greu que molts
     serveis d'aquests han decidit apujar els seus preus per poder fer front a la demanda.
+    \footnote{\href{https://www.xataka.com/empresas-y-economia/13-grandes-operadoras-se-unen-para-volver-a-pedir-a-europa-pago-tuberias-que-servicios-como-netflix-youtube-ayuden-costes-red}{Notícia a Xataka el 29-11-21: 13 operadoras piden subir precios a Netflix y Youtube.}}
 
     Al mateix temps que hi ha aquest augment de la demanda per serveis nous d'Internet, també hi ha altres que estan intentant canviar
-    de plataforma de distribució tecnològica com la televisió i la ràdio; és a dir, les cadenes de televisió estan intentant transmetre el seu contingut utilitzant Internet en lloc d'antenes o per cable utilitzant un canal freqüencial destinat per elles. De fet, fer-ho a través
-    d'Internet permet estalviar costos significatius de distribució al mateix temps que permet tenir una retroactivitat i perspectiva més acurada
+    de plataforma de distribució tecnològica com la televisió i la ràdio; és a dir, les cadenes de televisió estan intentant transmetre el seu contingut utilitzant Internet en lloc d'antenes i cable. 
+    De fet, fer-ho a través d'Internet permet estalviar costos significatius de distribució al mateix temps que permet tenir una retroactivitat i perspectiva més acurada
     de la quantitat de gent que està veient l'emissió.
 
     \begin{figure}[H]
@@ -20,27 +21,30 @@
         en ver fort el tràfic normal, en verd fluix el tràfic si la descarrega es fes amb multicast. Imatge d'Akamai.}}
     \end{figure}
 
-    L'any 2015, el tràfic de serveis de vídeo en temps real, com Netflix, YouTube o Twitch, va representar pràcticament el 70\% del tràfic. Normalment,
-    aquest tipus de tràfic va per pics, ja que quan una nova temporada d'una sèrie famosa, quan un youtuber important puja un nou vídeo o s'està
+    L'any 2015, el tràfic de serveis de vídeo en temps real, com Netflix, YouTube o Twitch, va representar pràcticament el 70\% del tràfic.
+    \footnote{\href{https://hipertextual.com/2015/12/streaming-netflix-ancho-banda}{Notícia a Hipertextual el 07-12-15: El streaming ya representa el 70\% del tráfico de la red}}
+    Normalment, aquest tipus de tràfic va per pics, ja que quan una nova temporada d'una sèrie famosa, quan un youtuber important puja un nou vídeo o s'està
     fent un esdeveniment en directe la quantitat de gent veient el contingut sol augmentar de manera sobtada sobretot als primers moments. Això sol implicar
     en general problemes per donar accés a tothom al servei depenent de quanta gent sigui, mentre que al mateix temps altres serveis també es vegin
     afectats (les \ac{CDN} solen tenir molts serveis simultàniament distribuïts en microserveis).
     
+    \newpage
+
     Per ficar dades i posar-nos en context del volum de tràfic, el màxim que s'ha arribat a donar simultàniament per part de la \ac{CDN} Akamai
-    ha estat un pico de 167 Tbps en abril de 2020. Suposant un tràfic lineal, per simplificar, ja que normalment s'utilitzen codificacions \ac{CBR}
+    ha estat un pico de 200 Tbps en març de 2021.\footnote{\href{https://addvalue.com.br/novo/artigos/akamai-hits-huge-new-200-tbps/}{Noticia a Addvalue el 24-03-22: Akamai hits huge new 200 Tbps web traffic peak}}
+    Suposant un tràfic lineal, per simplificar, ja que normalment s'utilitzen codificacions \ac{CBR}
     en directe en temps real, amb una resolució de 1080p el tràfic és de 5 Mbps/connexió i fins a 20 Mbps/connexió en cas de 4k. Llavors, en 1080p
-    suposant aquell tràfic màxim suportat llavors es podrien arribar fins a 33.4 milions de clients en 1080p i fins a 8.35 milions en 4k. Si tota
-    Espanya volgués mirar un contingut en directe, seria impossible donar el servei.
+    suposant aquell tràfic màxim suportat llavors es podrien arribar fins a 40 milions de clients en 1080p i fins a 10 milions en 4k. Si tota
+    Espanya volgués mirar un contingut en directe, seria quasi impossible donar el servei correctament en 4k i molt just en 1080p.
     
-    Aquests problemes de subministrament solen ser a causa que les connexions que es fan són punt a punt; dit d'una altra manera,
-    són unicast. Això implica que el servei que pots donar en gran part està limitat al nombre de connexions simultànies que es pot donar. Malgrat que
+    Aquests problemes de subministrament solen ser a causa de que les connexions que es fan són punt a punt; dit d'una altra manera,
+    són \textbf{unicast}. Això implica que el servei que pots donar en gran part està limitat al nombre de connexions simultànies que es pot suportar. Malgrat que
     l'ús d'unicast té grans avantatges com la facilitat en la seguretat, la simplificació en l'arquitectura del programa o que pràcticament tots els
-    dispositius del món suporten, també comporta un gran inconvenient.
+    dispositius del món ho suporten de manera nativa, també comporta un gran inconvenient.
     
     Si el contingut que has de distribuir als clients és exactament el mateix com en el cas de la televisió o la ràdio, unicast pot arribar a saturar
-    un servei si el volum d'usuaris és molt alt. Arran d'aquesta qüestió de distribuir el mateix contingut a tothom que sol·licitàs, ja en
-    els anys 80 amb la creació d'\ac{IP}, es va pensar en una tecnologia que soluciona aquests casos: \textbf{IP Multicast}. Malgrat no estar tan
-    establerta com IP unicast, sí que la gran majoria de dispositius l'accepten.
+    un servei si el volum d'usuaris és molt alt. Amb això en ment, ja a finals dels anys 80 es va publicar una extensió de d'\ac{IP}, \cite{RFC 988} que solucionava
+    aquest problema: \textbf{IP Multicast}. Malgrat no estar tan establerta com IP unicast, sí que la gran majoria de dispositius l'accepten.
     
     Per altra banda, al llarg dels anys, a les connexions unicast normalment han fet ús d'un protocol anomenat \ac{TCP}. Aquest protocol va ser especialment
     important en els anys 90 i a principis dels 2000 perquè Internet pogués funcionar i popularitzar-se, ja que les connexions eren lentes i poc fiables.
